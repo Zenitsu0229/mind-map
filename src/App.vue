@@ -1,40 +1,58 @@
 <template>
-  <StartScreen v-if="!started" @start="handleStart" />
+  <div :data-theme="store.theme">
+    <StartScreen v-if="!started" @start="handleStart" @continue="handleContinue" />
 
-  <template v-else>
-    <MindMapCanvas />
-    <Toolbar @reset-view="onResetView" @restart="handleRestart" />
-  </template>
+    <template v-else>
+      <MindMapCanvas ref="canvasRef" />
+      <Toolbar
+        @reset-view="onResetView"
+        @restart="handleRestart"
+        :show-shortcuts="showShortcuts"
+        @toggle-shortcuts="showShortcuts = !showShortcuts"
+      />
+      <ShortcutOverlay v-if="showShortcuts" @close="showShortcuts = false" />
+    </template>
+  </div>
 </template>
 
-<script setup>
-import { ref, provide } from 'vue'
-import { useMindMap } from './composables/useMindMap.js'
-import StartScreen    from './components/StartScreen.vue'
-import MindMapCanvas  from './components/MindMapCanvas.vue'
-import Toolbar        from './components/Toolbar.vue'
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useMindMapStore } from './stores/mindmapStore'
+import StartScreen from './components/StartScreen.vue'
+import MindMapCanvas from './components/MindMapCanvas.vue'
+import Toolbar from './components/Toolbar.vue'
+import ShortcutOverlay from './components/ShortcutOverlay.vue'
 
-const started  = ref(false)
-const mindMap  = useMindMap()
+const store = useMindMapStore()
+const started = ref(false)
+const showShortcuts = ref(false)
+const canvasRef = ref<InstanceType<typeof MindMapCanvas> | null>(null)
 
-// Make mindMap available to all descendant components via inject
-provide('mindMap', mindMap)
-
-// Expose resetView trigger to MindMapCanvas via provide
-const resetViewTrigger = ref(0)
-provide('resetViewTrigger', resetViewTrigger)
-
-function handleStart(text) {
-  mindMap.startMap(text)
+function handleStart(text: string): void {
+  store.initMap(text)
   started.value = true
 }
 
-function handleRestart() {
-  mindMap.resetMap()
+function handleContinue(): void {
+  store.loadFromSaved()
+  started.value = true
+}
+
+function handleRestart(): void {
+  store.resetMap()
   started.value = false
 }
 
-function onResetView() {
-  resetViewTrigger.value++
+function onResetView(): void {
+  canvasRef.value?.resetView()
 }
+
+// テーマ変更をdocumentに反映
+watch(
+  () => store.theme,
+  (newTheme) => {
+    document.documentElement.setAttribute('data-theme', newTheme)
+  },
+  { immediate: true }
+)
 </script>

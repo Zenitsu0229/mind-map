@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(start D:/02_project/mind-map/index.html)"
+      "Bash(start D:/02_project/mind-map/index.html)",
+      "Bash(cd \"D:/02_project/mind-map\" && npm install 2>&1)",
+      "Bash(cd \"D:/02_project/mind-map\" && npx vite build 2>&1)",
+      "Bash(cd D:/02_project/mind-map && npm install 2>&1 | tail -5)",
+      "Bash(cd D:/02_project/mind-map && npx vite build 2>&1)",
+      "WebFetch(domain:www.mindmeister.com)",
+      "WebFetch(domain:support.mindmeister.com)",
+      "WebFetch(domain:www.meisterlabs.com)"
     ]
   }
 }

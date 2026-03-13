@@ -1,102 +1,99 @@
 <template>
   <div
     class="canvas"
-    :class="{ panning: isPanning }"
-    @mousedown="onMouseDown"
-    @mousemove="onMouseMove"
-    @mouseup="onMouseUp"
-    @mouseleave="onMouseUp"
-    @wheel.prevent="onWheel"
+    :class="{ panning: canvas.isPanning.value }"
+    @mousedown="onCanvasMouseDown"
+    @mousemove="canvas.onMouseMove"
+    @mouseup="canvas.onMouseUp"
+    @mouseleave="canvas.onMouseUp"
+    @wheel.prevent="canvas.onWheel"
+    @click="onCanvasClick"
   >
-    <!-- Pan & zoom world -->
-    <div class="world" :style="worldStyle">
-      <!-- Connection lines -->
+    <!-- Pan & zoom world (原点は画面左上、transformで中央に移動済み) -->
+    <div class="world" :style="canvas.worldStyle.value">
+      <!-- Connection lines SVG -->
       <svg class="lines">
         <path
-          v-for="link in mindMap.links.value"
+          v-for="link in store.allLinks"
           :key="link.id"
-          :d="mindMap.linkPath(link)"
+          :d="getLinkPath(link)"
           fill="none"
-          stroke="#3498db"
+          :stroke="getDepthColor(link.depth)"
           stroke-width="2"
-          opacity="0.5"
+          opacity="0.6"
           stroke-linecap="round"
         />
       </svg>
 
       <!-- Nodes -->
       <MindNode
-        v-for="node in mindMap.nodes.value"
+        v-for="node in store.allNodes"
         :key="node.id"
         :node="node"
-        @mousedown.stop
       />
     </div>
 
     <!-- Usage hint -->
-    <p class="hint">ドラッグ：移動　ホイール：ズーム　ノードをダブルクリック：編集</p>
+    <p class="hint">
+      ドラッグ：移動　ホイール：ズーム　ダブルクリック：編集　Tab：子追加　Enter：兄弟追加　?：ショートカット
+    </p>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, watch, inject } from 'vue'
+<script setup lang="ts">
+import { onMounted, watch } from 'vue'
 import MindNode from './MindNode.vue'
+import { useMindMapStore } from '../stores/mindmapStore'
+import { useCanvas } from '../composables/useCanvas'
+import type { LinkInfo } from '../types'
+import { NODE_W, NODE_H } from '../composables/useLayout'
 
-const mindMap          = inject('mindMap')
-const resetViewTrigger = inject('resetViewTrigger')
+const store = useMindMapStore()
+const canvas = useCanvas()
 
-// ── Pan & zoom state ─────────────────────────────────────────────────────────
-const pan       = ref({ x: 0, y: 0 })
-const zoom      = ref(1)
-const isPanning = ref(false)
-let   panStart  = null
+const colorPalette = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6', '#1abc9c']
 
-const worldStyle = computed(() => ({
-  transform:       `translate(${pan.value.x}px, ${pan.value.y}px) scale(${zoom.value})`,
-  transformOrigin: '0 0',
-}))
+function getDepthColor(depth: number): string {
+  return colorPalette[depth % colorPalette.length]
+}
 
-// Reset view when triggered from Toolbar via App.vue
-watch(resetViewTrigger, () => {
-  pan.value  = { x: 0, y: 0 }
-  zoom.value = 1
+function getLinkPath(link: LinkInfo): string {
+  const parent = store.allNodes.find(n => n.id === link.parentId)
+  const child = store.allNodes.find(n => n.id === link.childId)
+  if (!parent || !child) return ''
+
+  const px = parent.x
+  const py = parent.y
+  const cx = child.x
+  const cy = child.y
+  const mx = (px + cx) / 2
+
+  return `M${px},${py} C${mx},${py} ${mx},${cy} ${cx},${cy}`
+}
+
+function onCanvasMouseDown(e: MouseEvent): void {
+  // ノードをクリックした場合はパンしない（.stopで止める）
+  canvas.onMouseDown(e)
+}
+
+function onCanvasClick(e: MouseEvent): void {
+  // キャンバス自体をクリックしたら選択解除
+  const target = e.target as HTMLElement
+  if (target.classList.contains('canvas') || target.classList.contains('world')) {
+    store.selectNode(null)
+  }
+}
+
+// 初期表示時に画面中央にリセット
+onMounted(() => {
+  resetView()
 })
 
-// ── Pan handlers ─────────────────────────────────────────────────────────────
-function onMouseDown(e) {
-  if (e.button !== 0) return
-  isPanning.value = true
-  panStart = { mx: e.clientX, my: e.clientY, px: pan.value.x, py: pan.value.y }
+function resetView(): void {
+  canvas.resetView(window.innerWidth, window.innerHeight)
 }
 
-function onMouseMove(e) {
-  if (!isPanning.value || !panStart) return
-  pan.value = {
-    x: panStart.px + (e.clientX - panStart.mx),
-    y: panStart.py + (e.clientY - panStart.my),
-  }
-}
-
-function onMouseUp() {
-  isPanning.value = false
-  panStart = null
-}
-
-// ── Zoom handler ─────────────────────────────────────────────────────────────
-function onWheel(e) {
-  const factor = e.deltaY > 0 ? 0.9 : 1.1
-  const newZ   = Math.min(3, Math.max(0.2, zoom.value * factor))
-
-  const rect = e.currentTarget.getBoundingClientRect()
-  const mx   = e.clientX - rect.left
-  const my   = e.clientY - rect.top
-
-  pan.value = {
-    x: mx - (mx - pan.value.x) * (newZ / zoom.value),
-    y: my - (my - pan.value.y) * (newZ / zoom.value),
-  }
-  zoom.value = newZ
-}
+defineExpose({ resetView })
 </script>
 
 <style scoped>
@@ -106,6 +103,8 @@ function onWheel(e) {
   position: relative;
   overflow: hidden;
   cursor: grab;
+  background: var(--bg);
+  transition: background 0.3s ease;
 }
 
 .canvas.panning {
@@ -131,9 +130,10 @@ function onWheel(e) {
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 12px;
-  color: #aaa;
+  font-size: 11px;
+  color: var(--hint-color);
   pointer-events: none;
   white-space: nowrap;
+  font-family: "Noto Sans JP", sans-serif;
 }
 </style>

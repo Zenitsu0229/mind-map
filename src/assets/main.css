@@ -1,3 +1,51 @@
+/* CSS変数テーマシステム */
+:root {
+  --font-family: "Noto Sans JP", sans-serif;
+
+  /* ライトモード */
+  --bg: #fafafa;
+  --node-bg: #ffffff;
+  --node-border: #c8d6e5;
+  --node-text: #2c3e50;
+  --node-root-bg: #f0fff4;
+  --node-root-border: #2ecc71;
+  --toolbar-bg: rgba(255, 255, 255, 0.95);
+  --toolbar-border: #e0e8f0;
+  --toolbar-text: #2c3e50;
+  --toolbar-btn-hover: #f0f4f8;
+  --hint-color: #aaa;
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-card-bg: #ffffff;
+  --overlay-card-text: #2c3e50;
+  --start-title: #2c3e50;
+  --start-sub: #7f8c8d;
+  --start-input-bg: #ffffff;
+  --start-input-border: #c8d6e5;
+  --start-input-text: #2c3e50;
+}
+
+[data-theme="dark"] {
+  --bg: #1a1a2e;
+  --node-bg: #16213e;
+  --node-border: #0f3460;
+  --node-text: #e0e0e0;
+  --node-root-bg: #0d2b1e;
+  --node-root-border: #2ecc71;
+  --toolbar-bg: rgba(22, 33, 62, 0.97);
+  --toolbar-border: #0f3460;
+  --toolbar-text: #e0e0e0;
+  --toolbar-btn-hover: #0f3460;
+  --hint-color: #555;
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+  --overlay-card-bg: #16213e;
+  --overlay-card-text: #e0e0e0;
+  --start-title: #e0e0e0;
+  --start-sub: #888;
+  --start-input-bg: #16213e;
+  --start-input-border: #0f3460;
+  --start-input-text: #e0e0e0;
+}
+
 *,
 *::before,
 *::after {
@@ -7,10 +55,12 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #eef2f7;
+  font-family: var(--font-family);
+  background: var(--bg);
   height: 100vh;
   overflow: hidden;
+  color: var(--node-text);
+  transition: background 0.3s ease;
 }
 
 #app {
