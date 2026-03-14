@@ -66,9 +66,13 @@
     <div class="divider"></div>
 
     <div class="toolbar-section">
-      <button class="toolbar-btn" title="画面リセット" @click="emit('reset-view')">
+      <button class="toolbar-btn" title="画面位置をリセット" @click="emit('reset-view')">
         <span class="icon">⊙</span>
-        <span class="label">リセット</span>
+        <span class="label">表示リセット</span>
+      </button>
+      <button class="toolbar-btn danger" title="マップを全リセット" @click="onFullReset">
+        <span class="icon">✕</span>
+        <span class="label">全リセット</span>
       </button>
     </div>
 
@@ -107,8 +111,15 @@ async function onExportImage(): Promise<void> {
 
 const emit = defineEmits<{
   (e: 'reset-view'): void
+  (e: 'restart'): void
   (e: 'toggle-shortcuts'): void
 }>()
+
+function onFullReset(): void {
+  if (confirm('マップをすべてリセットしますか？\nこの操作は元に戻せません。')) {
+    emit('restart')
+  }
+}
 
 defineProps<{
   showShortcuts: boolean
@@ -263,6 +274,16 @@ function onImportFile(event: Event): void {
   width: auto;
   padding: 7px 10px;
   font-size: 13px;
+}
+
+.toolbar-btn.danger {
+  color: #e06060;
+}
+
+.toolbar-btn.danger:hover:not(:disabled) {
+  background: rgba(224, 96, 96, 0.1);
+  border-color: #e06060;
+  color: #e06060;
 }
 
 .toolbar-btn.active {

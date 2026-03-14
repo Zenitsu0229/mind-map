@@ -6,6 +6,7 @@
       <MindMapCanvas ref="canvasRef" />
       <Toolbar
         @reset-view="onResetView"
+        @restart="handleRestart"
         :show-shortcuts="showShortcuts"
         @toggle-shortcuts="showShortcuts = !showShortcuts"
       />
@@ -35,6 +36,11 @@ function handleStart(text: string): void {
 function handleContinue(): void {
   store.loadFromSaved()
   started.value = true
+}
+
+function handleRestart(): void {
+  store.resetMap()
+  started.value = false
 }
 
 function onResetView(): void {
