@@ -94,12 +94,14 @@ export function useKeyboard() {
     if (!isEditing) {
       if (e.key === 'Tab') {
         e.preventDefault()
+        e.stopPropagation()
         store.addChild(selectedId)
         return
       }
 
       if (e.key === 'Enter') {
         e.preventDefault()
+        e.stopPropagation()
         if (selectedId === store.root?.id) {
           store.addChild(selectedId)
         } else {
@@ -110,6 +112,7 @@ export function useKeyboard() {
 
       if (e.key === 'Delete' || e.key === 'Backspace') {
         e.preventDefault()
+        e.stopPropagation()
         store.deleteNode(selectedId)
         return
       }
@@ -151,11 +154,11 @@ export function useKeyboard() {
   }
 
   onMounted(() => {
-    window.addEventListener('keydown', onKeydown)
+    window.addEventListener('keydown', onKeydown, true)
   })
 
   onUnmounted(() => {
-    window.removeEventListener('keydown', onKeydown)
+    window.removeEventListener('keydown', onKeydown, true)
   })
 
   return {

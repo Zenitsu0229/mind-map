@@ -1,51 +1,85 @@
-/* CSS変数テーマシステム */
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
 :root {
   --font-family: "Noto Sans JP", sans-serif;
 
-  /* ライトモード */
-  --bg: #fafafa;
-  --node-bg: #ffffff;
-  --node-border: #c8d6e5;
-  --node-text: #2c3e50;
-  --node-root-bg: #f0fff4;
-  --node-root-border: #2ecc71;
-  --toolbar-bg: rgba(255, 255, 255, 0.95);
-  --toolbar-border: #e0e8f0;
-  --toolbar-text: #2c3e50;
-  --toolbar-btn-hover: #f0f4f8;
-  --hint-color: #aaa;
-  --overlay-bg: rgba(0, 0, 0, 0.5);
-  --overlay-card-bg: #ffffff;
-  --overlay-card-text: #2c3e50;
-  --start-title: #2c3e50;
-  --start-sub: #7f8c8d;
-  --start-input-bg: #ffffff;
-  --start-input-border: #c8d6e5;
-  --start-input-text: #2c3e50;
+  /* Dark (default) */
+  --bg:              #0b0b10;
+  --surface:         #111118;
+  --surface-raised:  #18181f;
+  --border:          #1f1f2b;
+  --border-active:   #3a3a56;
+  --text-primary:    #dcdce8;
+  --text-secondary:  #5c5c78;
+  --accent:          #8b80f8;
+  --accent-glow:     rgba(139, 128, 248, 0.18);
+  --accent-dim:      rgba(139, 128, 248, 0.07);
+  --success:         #4ecca3;
+  --warn:            #f0c060;
+
+  /* Aliases used in components */
+  --node-bg:          var(--surface-raised);
+  --node-border:      var(--border-active);
+  --node-text:        var(--text-primary);
+  --node-root-bg:     rgba(139, 128, 248, 0.06);
+  --node-root-border: var(--accent);
+
+  --toolbar-bg:        rgba(14, 14, 20, 0.92);
+  --toolbar-border:    var(--border);
+  --toolbar-text:      var(--text-primary);
+  --toolbar-btn-hover: rgba(139, 128, 248, 0.1);
+
+  --hint-color:        var(--text-secondary);
+
+  --overlay-bg:        rgba(0, 0, 0, 0.7);
+  --overlay-card-bg:   var(--surface);
+  --overlay-card-text: var(--text-primary);
+
+  --start-title:       var(--text-primary);
+  --start-sub:         var(--text-secondary);
+  --start-input-bg:    var(--surface-raised);
+  --start-input-border:var(--border);
+  --start-input-text:  var(--text-primary);
 }
 
-[data-theme="dark"] {
-  --bg: #1a1a2e;
-  --node-bg: #16213e;
-  --node-border: #0f3460;
-  --node-text: #e0e0e0;
-  --node-root-bg: #0d2b1e;
-  --node-root-border: #2ecc71;
-  --toolbar-bg: rgba(22, 33, 62, 0.97);
-  --toolbar-border: #0f3460;
-  --toolbar-text: #e0e0e0;
-  --toolbar-btn-hover: #0f3460;
-  --hint-color: #555;
-  --overlay-bg: rgba(0, 0, 0, 0.7);
-  --overlay-card-bg: #16213e;
-  --overlay-card-text: #e0e0e0;
-  --start-title: #e0e0e0;
-  --start-sub: #888;
-  --start-input-bg: #16213e;
-  --start-input-border: #0f3460;
-  --start-input-text: #e0e0e0;
+[data-theme="light"] {
+  --bg:              #f0f0f6;
+  --surface:         #ffffff;
+  --surface-raised:  #f8f8fc;
+  --border:          #dcdce8;
+  --border-active:   #adadcc;
+  --text-primary:    #1c1c2e;
+  --text-secondary:  #8080a0;
+  --accent:          #6c5ce7;
+  --accent-glow:     rgba(108, 92, 231, 0.14);
+  --accent-dim:      rgba(108, 92, 231, 0.06);
+  --success:         #00b894;
+  --warn:            #e0a020;
+
+  --node-bg:          var(--surface-raised);
+  --node-border:      var(--border-active);
+  --node-text:        var(--text-primary);
+  --node-root-bg:     rgba(108, 92, 231, 0.05);
+  --node-root-border: var(--accent);
+
+  --toolbar-bg:        rgba(255, 255, 255, 0.94);
+  --toolbar-border:    var(--border);
+  --toolbar-text:      var(--text-primary);
+  --toolbar-btn-hover: rgba(108, 92, 231, 0.08);
+
+  --hint-color:        var(--text-secondary);
+
+  --overlay-bg:        rgba(0, 0, 0, 0.45);
+  --overlay-card-bg:   var(--surface);
+  --overlay-card-text: var(--text-primary);
+
+  --start-title:       var(--text-primary);
+  --start-sub:         var(--text-secondary);
+  --start-input-bg:    var(--surface);
+  --start-input-border:var(--border);
+  --start-input-text:  var(--text-primary);
 }
 
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -59,8 +93,8 @@ body {
   background: var(--bg);
   height: 100vh;
   overflow: hidden;
-  color: var(--node-text);
-  transition: background 0.3s ease;
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 #app {

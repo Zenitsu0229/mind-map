@@ -46,17 +46,17 @@
         <div class="section-title">編集履歴</div>
         <div class="shortcut-row">
           <kbd>Ctrl</kbd> + <kbd>Z</kbd>
-          <span>元に戻す (Undo)</span>
+          <span>元に戻す</span>
         </div>
         <div class="shortcut-row">
           <kbd>Ctrl</kbd> + <kbd>Y</kbd>
-          <span>やり直し (Redo)</span>
+          <span>やり直し</span>
         </div>
 
         <div class="section-title">その他</div>
         <div class="shortcut-row">
           <kbd>?</kbd>
-          <span>このオーバーレイを表示/非表示</span>
+          <span>このパネルを開閉</span>
         </div>
       </div>
     </div>
@@ -71,18 +71,11 @@ const emit = defineEmits<{
 }>()
 
 function onKeydown(e: KeyboardEvent): void {
-  if (e.key === 'Escape') {
-    emit('close')
-  }
+  if (e.key === 'Escape') emit('close')
 }
 
-onMounted(() => {
-  window.addEventListener('keydown', onKeydown)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', onKeydown)
-})
+onMounted(() => { window.addEventListener('keydown', onKeydown) })
+onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
 </script>
 
 <style scoped>
@@ -94,17 +87,18 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
 }
 
 .card {
   background: var(--overlay-card-bg);
   color: var(--overlay-card-text);
-  border-radius: 16px;
-  padding: 28px 32px;
-  min-width: 420px;
-  max-width: 560px;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 30px;
+  min-width: 380px;
+  max-width: 500px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
 }
 
 .card-header {
@@ -115,41 +109,43 @@ onUnmounted(() => {
 }
 
 .card-header h2 {
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
 }
 
 .close-btn {
   background: none;
   border: none;
-  font-size: 1.1rem;
-  color: var(--overlay-card-text);
+  font-size: 1rem;
+  color: var(--text-secondary);
   cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.2s;
+  transition: color 0.15s;
   padding: 4px 8px;
   border-radius: 6px;
 }
 
 .close-btn:hover {
-  opacity: 1;
-  background: rgba(128, 128, 128, 0.15);
+  color: var(--text-primary);
+  background: var(--toolbar-btn-hover);
 }
 
 .shortcut-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .section-title {
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #3498db;
-  margin-top: 12px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-top: 14px;
   margin-bottom: 4px;
+  opacity: 0.85;
 }
 
 .section-title:first-child {
@@ -159,28 +155,29 @@ onUnmounted(() => {
 .shortcut-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
-  padding: 4px 0;
+  gap: 5px;
+  font-size: 0.82rem;
+  padding: 3px 0;
+  color: var(--text-secondary);
 }
 
 .shortcut-row span {
   margin-left: auto;
-  color: var(--overlay-card-text);
-  opacity: 0.8;
+  color: var(--text-secondary);
 }
 
 kbd {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 8px;
-  background: rgba(128, 128, 128, 0.12);
-  border: 1px solid rgba(128, 128, 128, 0.3);
+  padding: 2px 7px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-active);
   border-radius: 5px;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   font-family: "Noto Sans JP", monospace;
   white-space: nowrap;
-  min-width: 28px;
+  min-width: 26px;
+  color: var(--text-primary);
 }
 </style>

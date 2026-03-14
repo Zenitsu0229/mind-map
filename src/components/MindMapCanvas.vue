@@ -9,9 +9,7 @@
     @wheel.prevent="canvas.onWheel"
     @click="onCanvasClick"
   >
-    <!-- Pan & zoom world (原点は画面左上、transformで中央に移動済み) -->
     <div class="world" :style="canvas.worldStyle.value">
-      <!-- Connection lines SVG -->
       <svg class="lines">
         <path
           v-for="link in store.allLinks"
@@ -19,13 +17,12 @@
           :d="getLinkPath(link)"
           fill="none"
           :stroke="getDepthColor(link.depth)"
-          stroke-width="2"
-          opacity="0.6"
+          stroke-width="1.5"
+          opacity="0.4"
           stroke-linecap="round"
         />
       </svg>
 
-      <!-- Nodes -->
       <MindNode
         v-for="node in store.allNodes"
         :key="node.id"
@@ -33,38 +30,38 @@
       />
     </div>
 
-    <!-- Usage hint -->
-    <p class="hint">
-      ドラッグ：移動　ホイール：ズーム　ダブルクリック：編集　Tab：子追加　Enter：兄弟追加　?：ショートカット
-    </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { onMounted } from 'vue'
 import MindNode from './MindNode.vue'
 import { useMindMapStore } from '../stores/mindmapStore'
 import { useCanvas } from '../composables/useCanvas'
+import { useKeyboard } from '../composables/useKeyboard'
 import type { LinkInfo } from '../types'
 import { NODE_W, NODE_H } from '../composables/useLayout'
 
 const store = useMindMapStore()
 const canvas = useCanvas()
+useKeyboard()
 
-const colorPalette = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6', '#1abc9c']
+const depthColors = ['#8b80f8', '#4ecca3', '#f0a060', '#60b8f0', '#e07898', '#a0d868']
 
 function getDepthColor(depth: number): string {
-  return colorPalette[depth % colorPalette.length]
+  return depthColors[depth % depthColors.length]
 }
 
 function getLinkPath(link: LinkInfo): string {
   const parent = store.allNodes.find(n => n.id === link.parentId)
-  const child = store.allNodes.find(n => n.id === link.childId)
+  const child  = store.allNodes.find(n => n.id === link.childId)
   if (!parent || !child) return ''
 
-  const px = parent.x
+  // 親：＋ボタンの少し右（NODE_W/2 + ボタン中心18px + 余白5px）
+  const px = parent.x + NODE_W / 2 + 23
   const py = parent.y
-  const cx = child.x
+  // 子：丸ぽちの少し右（-NODE_W/2 + padding4 + dot半径3 + 余白6）
+  const cx = child.x - NODE_W / 2 + 13
   const cy = child.y
   const mx = (px + cx) / 2
 
@@ -72,19 +69,16 @@ function getLinkPath(link: LinkInfo): string {
 }
 
 function onCanvasMouseDown(e: MouseEvent): void {
-  // ノードをクリックした場合はパンしない（.stopで止める）
   canvas.onMouseDown(e)
 }
 
 function onCanvasClick(e: MouseEvent): void {
-  // キャンバス自体をクリックしたら選択解除
   const target = e.target as HTMLElement
   if (target.classList.contains('canvas') || target.classList.contains('world')) {
     store.selectNode(null)
   }
 }
 
-// 初期表示時に画面中央にリセット
 onMounted(() => {
   resetView()
 })
@@ -123,17 +117,5 @@ defineExpose({ resetView })
   position: absolute;
   overflow: visible;
   pointer-events: none;
-}
-
-.hint {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 11px;
-  color: var(--hint-color);
-  pointer-events: none;
-  white-space: nowrap;
-  font-family: "Noto Sans JP", sans-serif;
 }
 </style>

@@ -15,6 +15,8 @@
       }"
       :style="nodeBoxStyle"
     >
+      <span class="dot" :style="dotStyle"></span>
+
       <input
         v-if="isEditing"
         ref="inputRef"
@@ -31,6 +33,14 @@
         {{ node.text || '…' }}
       </span>
     </div>
+
+    <!-- 右側の＋ボタン -->
+    <button
+      class="add-btn"
+      title="子ノードを追加 (Tab)"
+      @click.stop="store.addChild(node.id)"
+      @mousedown.stop
+    >+</button>
   </div>
 </template>
 
@@ -46,16 +56,14 @@ const store    = useMindMapStore()
 const inputRef = ref<HTMLInputElement | null>(null)
 const editText = ref(props.node.text)
 
-// ── computed ─────────────────────────────────────────────────────────────────
-
 const isSelected = computed(() => store.selectedId === props.node.id)
 const isEditing  = computed(() => store.editingId  === props.node.id)
 
-const depthColor = computed(() => {
-  const palette = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6', '#1abc9c']
-  if (props.node.parentId === null) return '#2ecc71'
-  return palette[props.node.depth % palette.length]
-})
+const depthColors = ['#8b80f8', '#4ecca3', '#f0a060', '#60b8f0', '#e07898', '#a0d868']
+
+const depthColor = computed(() =>
+  depthColors[(props.node.parentId === null ? 0 : props.node.depth) % depthColors.length]
+)
 
 const nodePositionStyle = computed(() => ({
   left: `${props.node.x - NODE_W / 2}px`,
@@ -63,16 +71,20 @@ const nodePositionStyle = computed(() => ({
 }))
 
 const nodeBoxStyle = computed(() => ({
-  borderColor: depthColor.value,
+  '--node-accent': depthColor.value,
+}))
+
+const dotStyle = computed(() => ({
+  background: depthColor.value,
+  width:  props.node.parentId === null ? '9px' : '6px',
+  height: props.node.parentId === null ? '9px' : '6px',
 }))
 
 const fontStyle = computed(() => {
-  if (props.node.depth === 0) return { fontSize: '18px', fontWeight: '700' }
-  if (props.node.depth === 1) return { fontSize: '15px', fontWeight: '500' }
-  return { fontSize: '13px', fontWeight: '400' }
+  if (props.node.depth === 0) return { fontSize: '14px', fontWeight: '600' }
+  if (props.node.depth === 1) return { fontSize: '13px', fontWeight: '500' }
+  return { fontSize: '12px', fontWeight: '400' }
 })
-
-// ── watchers ─────────────────────────────────────────────────────────────────
 
 watch(isEditing, async (val) => {
   if (val) {
@@ -86,8 +98,6 @@ watch(isEditing, async (val) => {
 watch(() => props.node.text, (val) => {
   if (!isEditing.value) editText.value = val
 })
-
-// ── handlers ─────────────────────────────────────────────────────────────────
 
 function onClickNode(): void {
   if (!isEditing.value) store.selectNode(props.node.id)
@@ -117,76 +127,111 @@ function onEscape(): void {
 .node {
   position: absolute;
   width: v-bind('NODE_W + "px"');
-  /* ノード間でhoverが重なるときのためにz-index調整 */
   z-index: 1;
 }
 
 .node:hover { z-index: 2; }
 
-/* ── Node box ── */
+/* ── ベースボックス：下線のみ ── */
 .node-box {
-  background: var(--node-bg);
-  border: 2px solid #3498db;
-  border-radius: 10px;
-  padding: 8px 12px;
-  text-align: center;
-  min-height: v-bind('NODE_H + "px"');
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  transition: box-shadow 0.15s, outline 0.1s, transform 0.1s;
-  word-break: break-all;
+  gap: 8px;
+  padding: 6px 4px 8px;
+  min-height: v-bind('NODE_H + "px"');
+  border-bottom: 1.5px solid color-mix(in srgb, var(--node-accent) 30%, transparent);
+  background: transparent;
   cursor: pointer;
   user-select: none;
+  transition: border-color 0.15s;
+}
+
+/* 丸ぽち */
+.dot {
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .node-box:hover {
-  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.22);
-  transform: translateY(-1px);
+  border-bottom-color: color-mix(in srgb, var(--node-accent) 65%, transparent);
 }
 
-/* 選択中 */
+.node-box:hover .dot {
+  transform: scale(1.25);
+  box-shadow: 0 0 6px var(--node-accent);
+}
+
 .node-box.selected {
-  outline: 2.5px solid #3498db;
-  outline-offset: 3px;
-  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.18), 0 4px 16px rgba(52, 152, 219, 0.25);
+  border-bottom-color: var(--node-accent);
 }
 
-/* ルートノード */
-.node-box.root {
-  background: var(--node-root-bg);
-  border-color: var(--node-root-border);
-  box-shadow: 0 4px 20px rgba(46, 204, 113, 0.2);
+.node-box.selected .dot {
+  transform: scale(1.3);
+  box-shadow: 0 0 8px var(--node-accent);
 }
 
-.node-box.root.selected {
-  outline-color: #2ecc71;
-  box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.2), 0 4px 20px rgba(46, 204, 113, 0.3);
-}
-
-/* 編集中 */
 .node-box.editing {
-  outline: 2.5px solid #f39c12;
-  outline-offset: 3px;
+  border-bottom-color: var(--warn);
+}
+
+.node-box.editing .dot {
+  background: var(--warn) !important;
+}
+
+.node-box.root {
+  border-bottom-width: 2px;
 }
 
 .node-text {
-  color: var(--node-text);
+  color: var(--text-primary);
   line-height: 1.4;
-  width: 100%;
+  flex: 1;
   word-break: break-all;
   pointer-events: none;
+  opacity: 0.88;
 }
 
 .node-input {
   border: none;
   outline: none;
-  text-align: center;
-  width: 100%;
+  flex: 1;
   background: transparent;
-  color: var(--node-text);
+  color: var(--text-primary);
   font-family: "Noto Sans JP", sans-serif;
   line-height: 1.4;
+}
+
+/* ── ＋ボタン ── */
+.add-btn {
+  position: absolute;
+  right: -28px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--border-active);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s, color 0.15s, border-color 0.15s;
+  padding: 0;
+}
+
+.node:hover .add-btn {
+  opacity: 1;
+}
+
+.add-btn:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 </style>

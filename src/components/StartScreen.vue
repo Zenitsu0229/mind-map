@@ -1,6 +1,7 @@
 <template>
   <div class="start-screen">
     <div class="start-card">
+      <div class="logo-mark"></div>
       <h1>Mind Map</h1>
       <p class="sub">最初のトピックを入力してください</p>
 
@@ -51,103 +52,117 @@ function submit(): void {
 <style scoped>
 .start-screen {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
   background: var(--bg);
-  transition: background 0.3s ease;
 }
 
 .start-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 48px 40px;
-  background: var(--node-bg);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  min-width: 400px;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 44px 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  min-width: 380px;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--accent);
+  opacity: 0.85;
+  margin-bottom: 4px;
 }
 
 h1 {
-  font-size: 2.2rem;
+  font-size: 1.9rem;
   color: var(--start-title);
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 0.04em;
 }
 
 .sub {
   color: var(--start-sub);
-  font-size: 0.9rem;
-  margin-bottom: 4px;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
 }
 
 .topic-input {
-  padding: 12px 18px;
+  padding: 11px 14px;
   width: 100%;
-  border: 2px solid var(--start-input-border);
-  border-radius: 10px;
-  font-size: 16px;
-  font-family: var(--font-family, "Noto Sans JP", sans-serif);
+  border: 1px solid var(--start-input-border);
+  border-radius: 9px;
+  font-size: 14px;
+  font-family: var(--font-family);
   outline: none;
   background: var(--start-input-bg);
   color: var(--start-input-text);
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-top: 6px;
 }
 
 .topic-input:focus {
-  border-color: #3498db;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .btn-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
+  margin-top: 4px;
 }
 
 .btn-primary {
-  padding: 13px 40px;
-  background: #3498db;
-  color: white;
+  padding: 11px 0;
+  background: var(--accent);
+  color: #fff;
   border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-family: var(--font-family, "Noto Sans JP", sans-serif);
+  border-radius: 9px;
+  font-size: 14px;
+  font-family: var(--font-family);
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition: opacity 0.15s, transform 0.1s;
   width: 100%;
+  letter-spacing: 0.04em;
+  font-weight: 500;
 }
 
 .btn-primary:hover {
-  background: #2980b9;
+  opacity: 0.88;
 }
 
 .btn-primary:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 .btn-secondary {
-  padding: 11px 40px;
+  padding: 10px 0;
   background: transparent;
-  color: #3498db;
-  border: 2px solid #3498db;
-  border-radius: 10px;
-  font-size: 15px;
-  font-family: var(--font-family, "Noto Sans JP", sans-serif);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font-size: 13px;
+  font-family: var(--font-family);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, transform 0.1s;
+  transition: border-color 0.15s, color 0.15s, transform 0.1s;
   width: 100%;
+  letter-spacing: 0.02em;
 }
 
 .btn-secondary:hover {
-  background: #3498db;
-  color: white;
+  border-color: var(--border-active);
+  color: var(--text-primary);
 }
 
 .btn-secondary:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 </style>

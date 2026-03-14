@@ -6,7 +6,6 @@
       <MindMapCanvas ref="canvasRef" />
       <Toolbar
         @reset-view="onResetView"
-        @restart="handleRestart"
         :show-shortcuts="showShortcuts"
         @toggle-shortcuts="showShortcuts = !showShortcuts"
       />
@@ -38,11 +37,6 @@ function handleContinue(): void {
   started.value = true
 }
 
-function handleRestart(): void {
-  store.resetMap()
-  started.value = false
-}
-
 function onResetView(): void {
   canvasRef.value?.resetView()
 }
@@ -52,6 +46,7 @@ watch(
   () => store.theme,
   (newTheme) => {
     document.documentElement.setAttribute('data-theme', newTheme)
+    document.documentElement.style.colorScheme = newTheme
   },
   { immediate: true }
 )

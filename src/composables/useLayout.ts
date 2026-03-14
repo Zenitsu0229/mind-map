@@ -27,14 +27,12 @@ function layoutBranch(
   parent: MindNode,
   direction: 'left' | 'right',
   depth: number,
+  startY: number,
 ): void {
   if (nodes.length === 0) return
 
-  const sign     = direction === 'right' ? 1 : -1
-  const totalSize = nodes.reduce((s, n) => s + getSubtreeSize(n), 0)
-  const totalH    = totalSize * V_GAP
-
-  let currentY = parent.y - totalH / 2
+  const sign = direction === 'right' ? 1 : -1
+  let currentY = startY
 
   for (const node of nodes) {
     const size = getSubtreeSize(node)
@@ -45,7 +43,7 @@ function layoutBranch(
     node.depth     = depth
     node.direction = direction
 
-    layoutBranch(node.children, node, direction, depth + 1)
+    layoutBranch(node.children, node, direction, depth + 1, currentY)
 
     currentY += h
   }
@@ -60,14 +58,10 @@ export function calcLayout(root: MindNode): void {
   root.y     = 0
   root.depth = 0
 
-  // ルート直下は方向を再アサイン（追加順に右/左交互）
-  root.children.forEach((child, i) => {
-    child.direction = i % 2 === 0 ? 'right' : 'left'
+  // すべての子を右方向へ
+  root.children.forEach(child => {
+    child.direction = 'right'
   })
 
-  const rightChildren = root.children.filter(c => c.direction === 'right')
-  const leftChildren  = root.children.filter(c => c.direction === 'left')
-
-  layoutBranch(rightChildren, root, 'right', 1)
-  layoutBranch(leftChildren,  root, 'left',  1)
+  layoutBranch(root.children, root, 'right', 1, 0)
 }

@@ -56,7 +56,7 @@ export const useMindMapStore = defineStore('mindmap', () => {
   const root = ref<MindNode | null>(null)
   const selectedId = ref<string | null>(null)
   const editingId = ref<string | null>(null)
-  const theme = ref<'light' | 'dark'>('light')
+  const theme = ref<'light' | 'dark'>('dark')
 
   const history = useHistory()
 
@@ -123,12 +123,7 @@ export const useMindMapStore = defineStore('mindmap', () => {
     // 方向を自動決定:
     //   - ルート直下 → 追加後の子数が奇数なら右、偶数なら左（右から始まる交互配置）
     //   - それ以外   → 親と同じ方向を継承
-    const autoDirection = ((): 'left' | 'right' => {
-      if (parent.parentId === null) {
-        return parent.children.length % 2 === 0 ? 'right' : 'left'
-      }
-      return (parent.direction === 'left' ? 'left' : 'right')
-    })()
+    const autoDirection: 'right' = 'right'
 
     const newNode: MindNode = {
       id: generateId(),
@@ -219,7 +214,7 @@ export const useMindMapStore = defineStore('mindmap', () => {
   }
 
   function toggleTheme(): void {
-    theme.value = theme.value === 'light' ? 'dark' : 'light'
+    theme.value = theme.value === 'dark' ? 'light' : 'dark'
   }
 
   function exportJSON(): void {

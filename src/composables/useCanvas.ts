@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue'
+import { NODE_W, NODE_H } from './useLayout'
 
 export function useCanvas() {
   const panX = ref(0)
@@ -45,14 +46,16 @@ export function useCanvas() {
   }
 
   function resetView(screenW: number, screenH: number): void {
-    // ルートは(0,0)なので画面中央に配置
-    panX.value = screenW / 2
-    panY.value = screenH / 2
+    // ルートをツールバー右側の左上に配置
+    panX.value = NODE_W / 2 + 196
+    panY.value = NODE_H / 2 + 60
     zoom.value = 1
   }
 
   function centerView(screenW: number, screenH: number): void {
-    resetView(screenW, screenH)
+    panX.value = screenW / 2
+    panY.value = screenH / 2
+    zoom.value = 1
   }
 
   return {
