@@ -26,8 +26,10 @@ export async function exportAsJpeg(): Promise<void> {
         const a = document.createElement('a')
         a.href = url
         a.download = 'mindmap.jpg'
+        document.body.appendChild(a)
         a.click()
-        URL.revokeObjectURL(url)
+        document.body.removeChild(a)
+        setTimeout(() => URL.revokeObjectURL(url), 1000)
       },
       'image/jpeg',
       0.92,
