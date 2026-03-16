@@ -94,11 +94,11 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
   background: var(--overlay-card-bg);
   color: var(--overlay-card-text);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 28px 30px;
+  border-radius: 8px;
+  padding: 24px 28px;
   min-width: 380px;
   max-width: 500px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .card-header {

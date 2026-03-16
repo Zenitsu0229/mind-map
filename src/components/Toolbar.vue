@@ -1,34 +1,45 @@
 <template>
   <aside class="toolbar">
-    <div class="toolbar-title">
-      <span class="title-dot"></span>
-      Mind Map
-    </div>
-
-    <div class="ops-list">
-      <div class="op-row"><kbd>ドラッグ</kbd><span>移動</span></div>
-      <div class="op-row"><kbd>ホイール</kbd><span>ズーム</span></div>
-      <div class="op-row"><kbd>Tab</kbd><span>子ノード追加</span></div>
-      <div class="op-row"><kbd>Enter</kbd><span>兄弟追加</span></div>
-      <div class="op-row"><kbd>Del</kbd><span>削除</span></div>
-      <div class="op-row"><kbd>F2</kbd><span>編集</span></div>
-      <div class="op-row"><kbd>↑↓</kbd><span>兄弟移動</span></div>
-      <div class="op-row"><kbd>←→</kbd><span>親子移動</span></div>
+    <div class="toolbar-brand">
+      <div class="brand-icon">
+        <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
+          <rect x="1" y="7" width="6" height="4" rx="1.5" fill="currentColor"/>
+          <rect x="11" y="2" width="6" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+          <rect x="11" y="7" width="6" height="4" rx="1.5" fill="currentColor"/>
+          <rect x="11" y="12" width="6" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+          <line x1="7" y1="9" x2="11" y2="4" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+          <line x1="7" y1="9" x2="11" y2="9" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+          <line x1="7" y1="9" x2="11" y2="14" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+        </svg>
+      </div>
+      <span class="brand-name">Mind Map</span>
     </div>
 
     <div class="divider"></div>
 
+    <div class="ops-list">
+      <div class="op-row"><kbd>ドラッグ</kbd><span>移動</span></div>
+      <div class="op-row"><kbd>ホイール</kbd><span>ズーム</span></div>
+      <div class="op-row"><kbd>Tab</kbd><span>子追加</span></div>
+      <div class="op-row"><kbd>Enter</kbd><span>兄弟追加</span></div>
+      <div class="op-row"><kbd>Del</kbd><span>削除</span></div>
+      <div class="op-row"><kbd>F2</kbd><span>編集</span></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">データ</div>
     <div class="toolbar-section">
       <button class="toolbar-btn" title="画像エクスポート (JPEG)" @click="onExportImage" :disabled="exporting">
-        <span class="icon">{{ exporting ? '…' : '🖼' }}</span>
-        <span class="label">{{ exporting ? '処理中' : '画像保存' }}</span>
+        <span class="icon">{{ exporting ? '…' : '↗' }}</span>
+        <span class="label">{{ exporting ? '処理中...' : '画像保存' }}</span>
       </button>
       <button class="toolbar-btn" title="JSONエクスポート" @click="store.exportJSON()">
-        <span class="icon">↑</span>
+        <span class="icon">↗</span>
         <span class="label">JSON保存</span>
       </button>
       <button class="toolbar-btn" title="JSONインポート" @click="triggerImport">
-        <span class="icon">↓</span>
+        <span class="icon">↙</span>
         <span class="label">インポート</span>
       </button>
       <input
@@ -42,6 +53,7 @@
 
     <div class="divider"></div>
 
+    <div class="section-label">履歴</div>
     <div class="toolbar-section">
       <button
         class="toolbar-btn"
@@ -50,7 +62,7 @@
         @click="store.undo()"
       >
         <span class="icon">↺</span>
-        <span class="label">Undo</span>
+        <span class="label">元に戻す</span>
       </button>
       <button
         class="toolbar-btn"
@@ -59,12 +71,13 @@
         @click="store.redo()"
       >
         <span class="icon">↻</span>
-        <span class="label">Redo</span>
+        <span class="label">やり直し</span>
       </button>
     </div>
 
     <div class="divider"></div>
 
+    <div class="section-label">表示</div>
     <div class="toolbar-section">
       <button class="toolbar-btn" title="画面位置をリセット" @click="emit('reset-view')">
         <span class="icon">⊙</span>
@@ -148,24 +161,63 @@ function onImportFile(event: Event): void {
   left: 16px;
   top: 16px;
   bottom: 16px;
-  width: 148px;
+  width: 152px;
   display: flex;
   flex-direction: column;
   gap: 2px;
   z-index: 100;
   background: var(--toolbar-bg);
   border: 1px solid var(--toolbar-border);
-  border-radius: 14px;
-  padding: 16px 8px 10px;
+  border-radius: 8px;
+  padding: 14px 8px 10px;
   backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ブランド */
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 6px 10px;
+}
+
+.brand-icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  border-radius: 5px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--toolbar-text);
+}
+
+/* セクションラベル */
+.section-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 0 10px 3px;
+  opacity: 0.7;
 }
 
 .ops-list {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding: 6px 8px 4px;
+  gap: 2px;
+  padding: 2px 6px 4px;
 }
 
 .op-row {
@@ -189,32 +241,12 @@ function onImportFile(event: Event): void {
   padding: 1px 5px;
   background: var(--surface-raised);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
   font-size: 9px;
   font-family: "Noto Sans JP", monospace;
   color: var(--text-primary);
   min-width: 28px;
   white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.toolbar-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 2px 8px 10px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: var(--text-primary);
-  opacity: 0.9;
-}
-
-.title-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
   flex-shrink: 0;
 }
 
@@ -236,24 +268,23 @@ function onImportFile(event: Event): void {
 .divider {
   height: 1px;
   background: var(--toolbar-border);
-  margin: 6px 4px;
-  opacity: 0.6;
+  margin: 5px 4px;
 }
 
 .toolbar-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   width: 100%;
-  padding: 7px 10px;
+  padding: 6px 10px;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 8px;
-  font-size: 12px;
+  border-radius: 5px;
+  font-size: 11.5px;
   font-family: "Noto Sans JP", sans-serif;
   cursor: pointer;
   color: var(--toolbar-text);
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
   text-align: left;
   white-space: nowrap;
   letter-spacing: 0.02em;
@@ -266,24 +297,24 @@ function onImportFile(event: Event): void {
 }
 
 .toolbar-btn:disabled {
-  opacity: 0.28;
+  opacity: 0.25;
   cursor: not-allowed;
 }
 
 .toolbar-btn.icon-only {
   width: auto;
-  padding: 7px 10px;
+  padding: 5px 9px;
   font-size: 13px;
 }
 
 .toolbar-btn.danger {
-  color: #e06060;
+  color: #f87171;
 }
 
 .toolbar-btn.danger:hover:not(:disabled) {
-  background: rgba(224, 96, 96, 0.1);
-  border-color: #e06060;
-  color: #e06060;
+  background: rgba(248, 113, 113, 0.08);
+  border-color: #f87171;
+  color: #f87171;
 }
 
 .toolbar-btn.active {
@@ -293,8 +324,8 @@ function onImportFile(event: Event): void {
 }
 
 .icon {
-  font-size: 14px;
-  width: 16px;
+  font-size: 12px;
+  width: 14px;
   text-align: center;
   opacity: 0.7;
   flex-shrink: 0;
