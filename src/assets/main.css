@@ -3,33 +3,33 @@
   --font-family: "Noto Sans JP", sans-serif;
 
   /* Dark (default) */
-  --bg:              #0d1117;
-  --surface:         #161c2a;
-  --surface-raised:  #1c2438;
-  --border:          #253348;
-  --border-active:   #3d526e;
-  --text-primary:    #e2e8f0;
-  --text-secondary:  #64748b;
-  --accent:          #3b82f6;
-  --accent-glow:     rgba(59, 130, 246, 0.15);
-  --accent-dim:      rgba(59, 130, 246, 0.08);
-  --success:         #10b981;
-  --warn:            #f59e0b;
+  --bg:              #0c0c0c;
+  --surface:         #141414;
+  --surface-raised:  #1e1e1e;
+  --border:          #2e2e2e;
+  --border-active:   #484848;
+  --text-primary:    #ececec;
+  --text-secondary:  #5a5a5a;
+  --accent:          #d0d0d0;
+  --accent-glow:     rgba(208, 208, 208, 0.08);
+  --accent-dim:      rgba(208, 208, 208, 0.06);
+  --success:         #a0a0a0;
+  --warn:            #b0b0b0;
 
-  --node-bg:          #1c2438;
-  --node-border:      #253348;
+  --node-bg:          #1a1a1a;
+  --node-border:      #2e2e2e;
   --node-text:        var(--text-primary);
-  --node-root-bg:     rgba(59, 130, 246, 0.08);
-  --node-root-border: #3b82f6;
+  --node-root-bg:     rgba(236, 236, 236, 0.04);
+  --node-root-border: #ececec;
 
-  --toolbar-bg:        rgba(13, 17, 23, 0.96);
-  --toolbar-border:    #253348;
-  --toolbar-text:      #c8d3e0;
-  --toolbar-btn-hover: rgba(59, 130, 246, 0.1);
+  --toolbar-bg:        rgba(10, 10, 10, 0.97);
+  --toolbar-border:    #2a2a2a;
+  --toolbar-text:      #c0c0c0;
+  --toolbar-btn-hover: rgba(255, 255, 255, 0.06);
 
   --hint-color:        var(--text-secondary);
 
-  --overlay-bg:        rgba(0, 0, 0, 0.72);
+  --overlay-bg:        rgba(0, 0, 0, 0.78);
   --overlay-card-bg:   var(--surface);
   --overlay-card-text: var(--text-primary);
 
@@ -41,30 +41,30 @@
 }
 
 [data-theme="light"] {
-  --bg:              #f1f5f9;
+  --bg:              #f0f0f0;
   --surface:         #ffffff;
-  --surface-raised:  #f8fafc;
-  --border:          #e2e8f0;
-  --border-active:   #94a3b8;
-  --text-primary:    #0f172a;
-  --text-secondary:  #64748b;
-  --accent:          #2563eb;
-  --accent-glow:     rgba(37, 99, 235, 0.12);
-  --accent-dim:      rgba(37, 99, 235, 0.06);
-  --success:         #059669;
-  --warn:            #d97706;
+  --surface-raised:  #f8f8f8;
+  --border:          #e0e0e0;
+  --border-active:   #b0b0b0;
+  --text-primary:    #0c0c0c;
+  --text-secondary:  #888888;
+  --accent:          #1a1a1a;
+  --accent-glow:     rgba(26, 26, 26, 0.08);
+  --accent-dim:      rgba(26, 26, 26, 0.05);
+  --success:         #444444;
+  --warn:            #666666;
 
   --node-bg:          #ffffff;
-  --node-border:      #e2e8f0;
-  --node-root-bg:     rgba(37, 99, 235, 0.05);
-  --node-root-border: #2563eb;
+  --node-border:      #e0e0e0;
+  --node-root-bg:     rgba(0, 0, 0, 0.03);
+  --node-root-border: #0c0c0c;
 
-  --toolbar-bg:        rgba(255, 255, 255, 0.97);
-  --toolbar-border:    #e2e8f0;
-  --toolbar-text:      #334155;
-  --toolbar-btn-hover: rgba(37, 99, 235, 0.07);
+  --toolbar-bg:        rgba(255, 255, 255, 0.98);
+  --toolbar-border:    #e0e0e0;
+  --toolbar-text:      #333333;
+  --toolbar-btn-hover: rgba(0, 0, 0, 0.05);
 
-  --overlay-bg:        rgba(15, 23, 42, 0.45);
+  --overlay-bg:        rgba(0, 0, 0, 0.45);
   --overlay-card-bg:   var(--surface);
   --overlay-card-text: var(--text-primary);
 

@@ -3,14 +3,14 @@
     <div class="start-card">
       <div class="brand">
         <div class="brand-icon">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <rect x="1" y="7" width="6" height="4" rx="1.5" fill="currentColor"/>
-            <rect x="11" y="2" width="6" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
-            <rect x="11" y="7" width="6" height="4" rx="1.5" fill="currentColor"/>
-            <rect x="11" y="12" width="6" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
-            <line x1="7" y1="9" x2="11" y2="4" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
-            <line x1="7" y1="9" x2="11" y2="9" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
-            <line x1="7" y1="9" x2="11" y2="14" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="0" y="6" width="5" height="4" fill="currentColor"/>
+            <rect x="9" y="1" width="7" height="3" fill="currentColor" opacity="0.6"/>
+            <rect x="9" y="6" width="7" height="3" fill="currentColor"/>
+            <rect x="9" y="11" width="7" height="3" fill="currentColor" opacity="0.6"/>
+            <line x1="5" y1="8" x2="9" y2="2.5" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+            <line x1="5" y1="8" x2="9" y2="7.5" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+            <line x1="5" y1="8" x2="9" y2="12.5" stroke="currentColor" stroke-width="1" opacity="0.4"/>
           </svg>
         </div>
         <span class="brand-name">Mind Map</span>
@@ -89,37 +89,42 @@ function submit(): void {
   padding: 36px 36px 32px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28), 0 1px 0 rgba(255,255,255,0.03) inset;
+  border-radius: 0;
+  box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.04), 0 8px 32px rgba(0, 0, 0, 0.4);
   min-width: 400px;
   max-width: 440px;
+}
+
+[data-theme="light"] .start-card {
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* ブランド */
 .brand {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   margin-bottom: 2px;
 }
 
 .brand-icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent);
-  border-radius: 6px;
-  color: #fff;
+  background: var(--text-primary);
+  border-radius: 0;
+  color: var(--bg);
+  flex-shrink: 0;
 }
 
 .brand-name {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: var(--text-primary);
 }
 
 .card-divider {
@@ -129,7 +134,7 @@ function submit(): void {
 }
 
 h1 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: var(--start-title);
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -151,9 +156,9 @@ h1 {
 }
 
 .field-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-secondary);
 }
@@ -162,24 +167,24 @@ h1 {
   padding: 10px 12px;
   width: 100%;
   border: 1px solid var(--start-input-border);
-  border-radius: 5px;
+  border-radius: 0;
   font-size: 14px;
   font-family: var(--font-family);
   outline: none;
   background: var(--start-input-bg);
   color: var(--start-input-text);
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  transition: border-color 0.12s, box-shadow 0.12s, background 0.12s;
 }
 
 .topic-input:hover {
   border-color: var(--border-active);
   background: var(--surface);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 0 0 1px var(--border-active);
 }
 
 .topic-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-color: var(--text-primary);
+  box-shadow: inset 0 0 0 1px var(--text-primary);
   background: var(--surface);
 }
 
@@ -196,33 +201,26 @@ h1 {
   justify-content: center;
   gap: 6px;
   padding: 10px 0;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 5px;
+  background: var(--text-primary);
+  color: var(--bg);
+  border: 1px solid var(--text-primary);
+  border-radius: 0;
   font-size: 13px;
   font-family: var(--font-family);
   cursor: pointer;
-  transition: opacity 0.15s, box-shadow 0.15s;
+  transition: opacity 0.12s;
   width: 100%;
-  letter-spacing: 0.04em;
-  font-weight: 500;
+  letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
 .btn-icon {
   font-size: 16px;
   line-height: 1;
-  opacity: 0.85;
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
-}
-
-.btn-primary:active {
-  opacity: 1;
-  box-shadow: none;
+  opacity: 0.82;
 }
 
 .btn-secondary {
@@ -230,11 +228,11 @@ h1 {
   background: transparent;
   color: var(--text-secondary);
   border: 1px solid var(--border);
-  border-radius: 5px;
+  border-radius: 0;
   font-size: 12px;
   font-family: var(--font-family);
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  transition: border-color 0.12s, color 0.12s;
   width: 100%;
   letter-spacing: 0.02em;
 }
@@ -242,6 +240,5 @@ h1 {
 .btn-secondary:hover {
   border-color: var(--border-active);
   color: var(--text-primary);
-  background: var(--surface-raised);
 }
 </style>

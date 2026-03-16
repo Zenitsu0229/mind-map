@@ -17,9 +17,9 @@
           :d="getLinkPath(link)"
           fill="none"
           :stroke="getDepthColor(link.depth)"
-          stroke-width="1.5"
-          opacity="0.4"
-          stroke-linecap="round"
+          stroke-width="1"
+          opacity="0.35"
+          stroke-linecap="square"
         />
       </svg>
 
@@ -46,7 +46,7 @@ const store = useMindMapStore()
 const canvas = useCanvas()
 useKeyboard()
 
-const depthColors = ['#8b80f8', '#4ecca3', '#f0a060', '#60b8f0', '#e07898', '#a0d868']
+const depthColors = ['#d0d0d0', '#a0a0a0', '#e8e8e8', '#787878', '#c0c0c0', '#909090']
 
 function getDepthColor(depth: number): string {
   return depthColors[depth % depthColors.length]

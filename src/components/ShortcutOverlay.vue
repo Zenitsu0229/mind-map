@@ -94,11 +94,11 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
   background: var(--overlay-card-bg);
   color: var(--overlay-card-text);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 24px 28px;
   min-width: 380px;
   max-width: 500px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px 0 rgba(255,255,255,0.03), 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 .card-header {
@@ -117,13 +117,13 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
 
 .close-btn {
   background: none;
-  border: none;
+  border: 1px solid transparent;
   font-size: 1rem;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: color 0.15s;
+  transition: color 0.12s, border-color 0.12s;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 .close-btn:hover {
@@ -173,7 +173,7 @@ kbd {
   padding: 2px 7px;
   background: var(--surface-raised);
   border: 1px solid var(--border-active);
-  border-radius: 5px;
+  border-radius: 0;
   font-size: 0.76rem;
   font-family: "Noto Sans JP", monospace;
   white-space: nowrap;

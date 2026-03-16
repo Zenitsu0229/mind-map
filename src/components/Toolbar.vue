@@ -2,14 +2,14 @@
   <aside class="toolbar">
     <div class="toolbar-brand">
       <div class="brand-icon">
-        <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
-          <rect x="1" y="7" width="6" height="4" rx="1.5" fill="currentColor"/>
-          <rect x="11" y="2" width="6" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
-          <rect x="11" y="7" width="6" height="4" rx="1.5" fill="currentColor"/>
-          <rect x="11" y="12" width="6" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
-          <line x1="7" y1="9" x2="11" y2="4" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
-          <line x1="7" y1="9" x2="11" y2="9" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
-          <line x1="7" y1="9" x2="11" y2="14" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <rect x="0" y="6" width="5" height="4" fill="currentColor"/>
+          <rect x="9" y="1" width="7" height="3" fill="currentColor" opacity="0.6"/>
+          <rect x="9" y="6" width="7" height="3" fill="currentColor"/>
+          <rect x="9" y="11" width="7" height="3" fill="currentColor" opacity="0.6"/>
+          <line x1="5" y1="8" x2="9" y2="2.5" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+          <line x1="5" y1="8" x2="9" y2="7.5" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+          <line x1="5" y1="8" x2="9" y2="12.5" stroke="currentColor" stroke-width="1" opacity="0.4"/>
         </svg>
       </div>
       <span class="brand-name">Mind Map</span>
@@ -168,10 +168,10 @@ function onImportFile(event: Event): void {
   z-index: 100;
   background: var(--toolbar-bg);
   border: 1px solid var(--toolbar-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 14px 8px 10px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.25);
 }
 
 /* ブランド */
@@ -183,21 +183,21 @@ function onImportFile(event: Event): void {
 }
 
 .brand-icon {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent);
-  border-radius: 5px;
-  color: #fff;
+  background: var(--text-primary);
+  border-radius: 0;
+  color: var(--bg);
   flex-shrink: 0;
 }
 
 .brand-name {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--toolbar-text);
 }
@@ -206,11 +206,10 @@ function onImportFile(event: Event): void {
 .section-label {
   font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-secondary);
   padding: 0 10px 3px;
-  opacity: 0.7;
 }
 
 .ops-list {
@@ -241,7 +240,7 @@ function onImportFile(event: Event): void {
   padding: 1px 5px;
   background: var(--surface-raised);
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 0;
   font-size: 9px;
   font-family: "Noto Sans JP", monospace;
   color: var(--text-primary);
@@ -279,7 +278,7 @@ function onImportFile(event: Event): void {
   padding: 6px 10px;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 5px;
+  border-radius: 0;
   font-size: 11.5px;
   font-family: "Noto Sans JP", sans-serif;
   cursor: pointer;
@@ -293,11 +292,11 @@ function onImportFile(event: Event): void {
 .toolbar-btn:hover:not(:disabled) {
   background: var(--toolbar-btn-hover);
   border-color: var(--border-active);
-  color: var(--accent);
+  color: var(--text-primary);
 }
 
 .toolbar-btn:disabled {
-  opacity: 0.25;
+  opacity: 0.22;
   cursor: not-allowed;
 }
 
@@ -308,26 +307,26 @@ function onImportFile(event: Event): void {
 }
 
 .toolbar-btn.danger {
-  color: #f87171;
+  color: #808080;
 }
 
 .toolbar-btn.danger:hover:not(:disabled) {
-  background: rgba(248, 113, 113, 0.08);
-  border-color: #f87171;
-  color: #f87171;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: #a0a0a0;
+  color: #e0e0e0;
 }
 
 .toolbar-btn.active {
   background: var(--accent-dim);
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--border-active);
+  color: var(--text-primary);
 }
 
 .icon {
   font-size: 12px;
   width: 14px;
   text-align: center;
-  opacity: 0.7;
+  opacity: 0.6;
   flex-shrink: 0;
 }
 

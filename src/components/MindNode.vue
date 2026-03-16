@@ -59,7 +59,7 @@ const editText = ref(props.node.text)
 const isSelected = computed(() => store.selectedId === props.node.id)
 const isEditing  = computed(() => store.editingId  === props.node.id)
 
-const depthColors = ['#3b82f6', '#0ea5e9', '#6366f1', '#8b5cf6', '#0891b2', '#4f46e5']
+const depthColors = ['#d0d0d0', '#a0a0a0', '#e8e8e8', '#787878', '#c0c0c0', '#909090']
 
 const depthColor = computed(() =>
   depthColors[(props.node.parentId === null ? 0 : props.node.depth) % depthColors.length]
@@ -132,7 +132,7 @@ function onEscape(): void {
 
 .node:hover { z-index: 2; }
 
-/* ── カード型ノード ── */
+/* ── 角型カードノード ── */
 .node-box {
   display: flex;
   align-items: center;
@@ -142,23 +142,23 @@ function onEscape(): void {
   background: var(--node-bg);
   border: 1px solid var(--node-border);
   border-left: 2px solid var(--node-accent);
-  border-radius: 5px;
+  border-radius: 0;
   cursor: pointer;
   user-select: none;
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  transition: border-color 0.12s, box-shadow 0.12s;
 }
 
-/* 丸ぽち */
+/* 四角ドット */
 .dot {
-  border-radius: 50%;
+  border-radius: 0;
   flex-shrink: 0;
-  transition: transform 0.15s;
+  transition: transform 0.12s;
 }
 
 .node-box:hover {
   border-color: var(--border-active);
   border-left-color: var(--node-accent);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.04);
 }
 
 .node-box:hover .dot {
@@ -167,7 +167,7 @@ function onEscape(): void {
 
 .node-box.selected {
   border-color: var(--node-accent);
-  box-shadow: 0 0 0 2px var(--accent-dim), 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 1px var(--node-accent);
 }
 
 .node-box.selected .dot {
@@ -175,13 +175,13 @@ function onEscape(): void {
 }
 
 .node-box.editing {
-  border-color: var(--warn);
-  border-left-color: var(--warn);
-  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15);
+  border-color: var(--text-secondary);
+  border-left-color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--text-secondary);
 }
 
 .node-box.editing .dot {
-  background: var(--warn) !important;
+  background: var(--text-primary) !important;
 }
 
 .node-box.root {
@@ -206,7 +206,7 @@ function onEscape(): void {
   line-height: 1.4;
 }
 
-/* ── ＋ボタン ── */
+/* ── ＋ボタン（角型） ── */
 .add-btn {
   position: absolute;
   right: -26px;
@@ -214,8 +214,8 @@ function onEscape(): void {
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
-  border-radius: 3px;
-  background: transparent;
+  border-radius: 0;
+  background: var(--surface-raised);
   border: 1px solid var(--border-active);
   color: var(--text-secondary);
   cursor: pointer;
@@ -225,7 +225,7 @@ function onEscape(): void {
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.15s, background 0.15s, color 0.15s, border-color 0.15s;
+  transition: opacity 0.12s, background 0.12s, color 0.12s, border-color 0.12s;
   padding: 0;
 }
 
