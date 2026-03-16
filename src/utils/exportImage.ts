@@ -12,8 +12,9 @@ export async function exportAsJpeg(): Promise<void> {
     const dataUrl = await toJpeg(canvasEl, {
       quality: 0.92,
       pixelRatio: 2,
+      skipFonts: true,
       backgroundColor:
-        getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#0b0b10',
+        getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#0c0c0c',
     })
 
     const a = document.createElement('a')

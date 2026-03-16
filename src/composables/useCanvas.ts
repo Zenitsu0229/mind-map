@@ -32,17 +32,28 @@ export function useCanvas() {
   }
 
   function onWheel(e: WheelEvent): void {
-    const factor = e.deltaY > 0 ? 0.9 : 1.1
-    const newZ = Math.min(3, Math.max(0.2, zoom.value * factor))
+    if (e.ctrlKey) {
+      // Ctrl + ホイール → ズーム（カーソル位置を中心に）
+      const factor = e.deltaY > 0 ? 0.9 : 1.1
+      const newZ = Math.min(3, Math.max(0.2, zoom.value * factor))
 
-    const target = e.currentTarget as HTMLElement
-    const rect = target.getBoundingClientRect()
-    const mx = e.clientX - rect.left
-    const my = e.clientY - rect.top
+      const target = e.currentTarget as HTMLElement
+      const rect = target.getBoundingClientRect()
+      const mx = e.clientX - rect.left
+      const my = e.clientY - rect.top
 
-    panX.value = mx - (mx - panX.value) * (newZ / zoom.value)
-    panY.value = my - (my - panY.value) * (newZ / zoom.value)
-    zoom.value = newZ
+      panX.value = mx - (mx - panX.value) * (newZ / zoom.value)
+      panY.value = my - (my - panY.value) * (newZ / zoom.value)
+      zoom.value = newZ
+    } else {
+      // ホイール単体 → 上下スクロール（Shiftで左右）
+      const delta = e.deltaY !== 0 ? e.deltaY : e.deltaX
+      if (e.shiftKey) {
+        panX.value -= delta
+      } else {
+        panY.value -= delta
+      }
+    }
   }
 
   function resetView(screenW: number, screenH: number): void {

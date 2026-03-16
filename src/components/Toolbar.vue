@@ -19,7 +19,8 @@
 
     <div class="ops-list">
       <div class="op-row"><kbd>ドラッグ</kbd><span>移動</span></div>
-      <div class="op-row"><kbd>ホイール</kbd><span>ズーム</span></div>
+      <div class="op-row"><kbd>ホイール</kbd><span>上下スクロール</span></div>
+      <div class="op-row"><kbd>Ctrl+⇕</kbd><span>ズーム</span></div>
       <div class="op-row"><kbd>Tab</kbd><span>子追加</span></div>
       <div class="op-row"><kbd>Enter</kbd><span>兄弟追加</span></div>
       <div class="op-row"><kbd>Del</kbd><span>削除</span></div>
