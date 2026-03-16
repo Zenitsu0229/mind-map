@@ -16,8 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useMindMapStore } from './stores/mindmapStore'
+import { hasStoredData } from './utils/storage'
 import StartScreen from './components/StartScreen.vue'
 import MindMapCanvas from './components/MindMapCanvas.vue'
 import Toolbar from './components/Toolbar.vue'
@@ -46,6 +47,35 @@ function handleRestart(): void {
 function onResetView(): void {
   canvasRef.value?.resetView()
 }
+
+// ブラウザの戻る/進む → undo/redo
+function onPopState(e: PopStateEvent): void {
+  if (!started.value) return
+  const newSerial: number = (e.state as { mms?: number } | null)?.mms ?? 0
+  const curSerial = store.browserSerial
+  if (newSerial < curSerial) {
+    store.undo()
+  } else if (newSerial > curSerial) {
+    store.redo()
+  }
+  store.setBrowserSerial(newSerial)
+}
+
+onMounted(() => {
+  // 保存データがあればリロード後もマップ画面を維持
+  if (hasStoredData()) {
+    handleContinue()
+  }
+
+  // ブラウザ履歴の初期状態を設定
+  window.history.replaceState({ mms: 0 }, '')
+
+  window.addEventListener('popstate', onPopState)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('popstate', onPopState)
+})
 
 // テーマ変更をdocumentに反映
 watch(

@@ -57,6 +57,7 @@ export const useMindMapStore = defineStore('mindmap', () => {
   const selectedId = ref<string | null>(null)
   const editingId = ref<string | null>(null)
   const theme = ref<'light' | 'dark'>('dark')
+  const browserSerial = ref(0)
 
   const history = useHistory()
 
@@ -83,6 +84,12 @@ export const useMindMapStore = defineStore('mindmap', () => {
 
   function takeSnapshot(): void {
     history.snapshot(root.value)
+    browserSerial.value++
+    window.history.pushState({ mms: browserSerial.value }, '')
+  }
+
+  function setBrowserSerial(n: number): void {
+    browserSerial.value = n
   }
 
   // ── actions ─────────────────────────────────────────────────────────────────
@@ -103,6 +110,8 @@ export const useMindMapStore = defineStore('mindmap', () => {
     selectedId.value = root.value.id
     editingId.value = null
     history.clear()
+    browserSerial.value = 0
+    window.history.replaceState({ mms: 0 }, '')
     applyLayout()
   }
 
@@ -111,6 +120,7 @@ export const useMindMapStore = defineStore('mindmap', () => {
     selectedId.value = null
     editingId.value = null
     history.clear()
+    browserSerial.value = 0
     clearStorage()
   }
 
@@ -281,6 +291,8 @@ export const useMindMapStore = defineStore('mindmap', () => {
     editingId,
     theme,
     history,
+    browserSerial,
+    setBrowserSerial,
     allNodes,
     allLinks,
     initMap,
