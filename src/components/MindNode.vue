@@ -13,10 +13,7 @@
         selected: isSelected,
         editing:  isEditing,
       }"
-      :style="nodeBoxStyle"
     >
-      <span class="dot" :style="dotStyle"></span>
-
       <input
         v-if="isEditing"
         ref="inputRef"
@@ -59,25 +56,9 @@ const editText = ref(props.node.text)
 const isSelected = computed(() => store.selectedId === props.node.id)
 const isEditing  = computed(() => store.editingId  === props.node.id)
 
-const depthColors = ['#d0d0d0', '#a0a0a0', '#e8e8e8', '#787878', '#c0c0c0', '#909090']
-
-const depthColor = computed(() =>
-  depthColors[(props.node.parentId === null ? 0 : props.node.depth) % depthColors.length]
-)
-
 const nodePositionStyle = computed(() => ({
   left: `${props.node.x - NODE_W / 2}px`,
   top:  `${props.node.y - NODE_H / 2}px`,
-}))
-
-const nodeBoxStyle = computed(() => ({
-  '--node-accent': depthColor.value,
-}))
-
-const dotStyle = computed(() => ({
-  background: depthColor.value,
-  width:  props.node.parentId === null ? '8px' : '6px',
-  height: props.node.parentId === null ? '8px' : '6px',
 }))
 
 const fontStyle = computed(() => {
@@ -132,60 +113,34 @@ function onEscape(): void {
 
 .node:hover { z-index: 2; }
 
-/* ── 角型カードノード ── */
+/* ── 枠線のみのシンプルなボックス ── */
 .node-box {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 10px 6px 8px;
+  padding: 4px 10px;
   min-height: v-bind('NODE_H + "px"');
-  background: var(--node-bg);
-  border: 1px solid var(--node-border);
-  border-left: 2px solid var(--node-accent);
+  background: transparent;
+  border: 1px solid var(--border);
   border-radius: 0;
   cursor: pointer;
   user-select: none;
-  transition: border-color 0.12s, box-shadow 0.12s;
-}
-
-/* 四角ドット */
-.dot {
-  border-radius: 0;
-  flex-shrink: 0;
-  transition: transform 0.12s;
+  transition: border-color 0.1s;
 }
 
 .node-box:hover {
   border-color: var(--border-active);
-  border-left-color: var(--node-accent);
-  box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.04);
-}
-
-.node-box:hover .dot {
-  transform: scale(1.2);
 }
 
 .node-box.selected {
-  border-color: var(--node-accent);
-  box-shadow: 0 0 0 1px var(--node-accent);
-}
-
-.node-box.selected .dot {
-  transform: scale(1.25);
+  border-color: var(--text-secondary);
 }
 
 .node-box.editing {
-  border-color: var(--text-secondary);
-  border-left-color: var(--text-primary);
-  box-shadow: 0 0 0 1px var(--text-secondary);
-}
-
-.node-box.editing .dot {
-  background: var(--text-primary) !important;
+  border-color: var(--text-primary);
 }
 
 .node-box.root {
-  border-left-width: 3px;
+  border-color: var(--text-secondary);
 }
 
 .node-text {
@@ -206,26 +161,26 @@ function onEscape(): void {
   line-height: 1.4;
 }
 
-/* ── ＋ボタン（角型） ── */
+/* ── ＋ボタン（角型・最小限） ── */
 .add-btn {
   position: absolute;
-  right: -26px;
+  right: -24px;
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 0;
-  background: var(--surface-raised);
-  border: 1px solid var(--border-active);
+  background: transparent;
+  border: 1px solid var(--border);
   color: var(--text-secondary);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.12s, background 0.12s, color 0.12s, border-color 0.12s;
+  transition: opacity 0.1s, border-color 0.1s, color 0.1s;
   padding: 0;
 }
 
@@ -234,8 +189,7 @@ function onEscape(): void {
 }
 
 .add-btn:hover {
-  background: var(--accent-dim);
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--border-active);
+  color: var(--text-primary);
 }
 </style>

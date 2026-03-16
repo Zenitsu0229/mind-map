@@ -57,15 +57,15 @@ function getLinkPath(link: LinkInfo): string {
   const child  = store.allNodes.find(n => n.id === link.childId)
   if (!parent || !child) return ''
 
-  // 親：＋ボタンの少し右（NODE_W/2 + ボタン中心18px + 余白5px）
-  const px = parent.x + NODE_W / 2 + 23
+  // 親の右端中央 → 子の左端中央 を直角で結ぶ
+  const px = parent.x + NODE_W / 2
   const py = parent.y
-  // 子：丸ぽちの少し右（-NODE_W/2 + padding4 + dot半径3 + 余白6）
-  const cx = child.x - NODE_W / 2 + 13
+  const cx = child.x - NODE_W / 2
   const cy = child.y
-  const mx = (px + cx) / 2
+  const mx = Math.round((px + cx) / 2)
 
-  return `M${px},${py} C${mx},${py} ${mx},${cy} ${cx},${cy}`
+  // L字型（右→縦→右）
+  return `M${px},${py} H${mx} V${cy} H${cx}`
 }
 
 function onCanvasMouseDown(e: MouseEvent): void {
