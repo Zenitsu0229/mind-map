@@ -1,6 +1,14 @@
 <template>
   <div :data-theme="store.theme">
-    <StartScreen v-if="!started" @start="handleStart" @continue="handleContinue" />
+    <StartScreen
+      v-if="!started"
+      @start="handleStart"
+      @continue="handleContinue"
+      @open-contact="showContact = true"
+      @open-terms="openLegal('terms')"
+      @open-privacy="openLegal('privacy')"
+      @open-cookie="openLegal('cookie')"
+    />
 
     <template v-else>
       <MindMapCanvas ref="canvasRef" />
@@ -12,6 +20,9 @@
       />
       <ShortcutOverlay v-if="showShortcuts" @close="showShortcuts = false" />
     </template>
+
+    <ContactModal v-if="showContact" @close="showContact = false" />
+    <LegalModal v-if="legalType" :type="legalType" @close="legalType = null" />
   </div>
 </template>
 
@@ -23,11 +34,21 @@ import StartScreen from './components/StartScreen.vue'
 import MindMapCanvas from './components/MindMapCanvas.vue'
 import Toolbar from './components/Toolbar.vue'
 import ShortcutOverlay from './components/ShortcutOverlay.vue'
+import ContactModal from './components/ContactModal.vue'
+import LegalModal from './components/LegalModal.vue'
+
+type LegalType = 'terms' | 'privacy' | 'cookie'
 
 const store = useMindMapStore()
 const started = ref(false)
 const showShortcuts = ref(false)
+const showContact = ref(false)
+const legalType = ref<LegalType | null>(null)
 const canvasRef = ref<InstanceType<typeof MindMapCanvas> | null>(null)
+
+function openLegal(type: LegalType): void {
+  legalType.value = type
+}
 
 function handleStart(text: string): void {
   store.initMap(text)

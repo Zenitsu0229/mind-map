@@ -47,6 +47,16 @@
         </button>
       </div>
     </div>
+
+    <footer class="page-footer">
+      <button class="footer-link" @click="emit('open-contact')">お問い合わせ</button>
+      <span class="footer-sep">|</span>
+      <button class="footer-link" @click="emit('open-terms')">利用規約</button>
+      <span class="footer-sep">|</span>
+      <button class="footer-link" @click="emit('open-privacy')">プライバシーポリシー</button>
+      <span class="footer-sep">|</span>
+      <button class="footer-link" @click="emit('open-cookie')">Cookieポリシー</button>
+    </footer>
   </div>
 </template>
 
@@ -57,6 +67,10 @@ import { hasStoredData } from '../utils/storage'
 const emit = defineEmits<{
   (e: 'start', text: string): void
   (e: 'continue'): void
+  (e: 'open-contact'): void
+  (e: 'open-terms'): void
+  (e: 'open-privacy'): void
+  (e: 'open-cookie'): void
 }>()
 
 const text = ref('')
@@ -79,6 +93,37 @@ function submit(): void {
   justify-content: center;
   height: 100vh;
   background: var(--bg);
+  position: relative;
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-link {
+  background: none;
+  border: none;
+  font-size: 10px;
+  font-family: var(--font-family);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  letter-spacing: 0.04em;
+  transition: color 0.12s;
+}
+
+.footer-link:hover {
+  color: var(--text-primary);
+}
+
+.footer-sep {
+  font-size: 10px;
+  color: var(--border-active);
+  user-select: none;
 }
 
 .start-card {
