@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0c0c0c"/>
+
+  <!-- Subtle grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Mind Map Illustration (left side) -->
+  <!-- Central node -->
+  <rect x="340" y="285" width="120" height="60" rx="30" fill="#d0d0d0"/>
+  <text x="400" y="321" font-family="sans-serif" font-size="14" font-weight="600" fill="#0c0c0c" text-anchor="middle">アイデア</text>
+
+  <!-- Branch 1: top-left -->
+  <line x1="340" y1="300" x2="220" y2="210" stroke="#6c8ebf" stroke-width="2.5"/>
+  <rect x="140" y="182" width="90" height="40" rx="20" fill="#1e3a5f"/>
+  <rect x="140" y="182" width="90" height="40" rx="20" fill="none" stroke="#6c8ebf" stroke-width="1.5"/>
+  <text x="185" y="207" font-family="sans-serif" font-size="12" fill="#6c8ebf" text-anchor="middle">企画</text>
+
+  <!-- Branch 2: middle-left -->
+  <line x1="340" y1="315" x2="210" y2="315" stroke="#82b366" stroke-width="2.5"/>
+  <rect x="130" y="292" width="90" height="40" rx="20" fill="#1a3a1a"/>
+  <rect x="130" y="292" width="90" height="40" rx="20" fill="none" stroke="#82b366" stroke-width="1.5"/>
+  <text x="175" y="317" font-family="sans-serif" font-size="12" fill="#82b366" text-anchor="middle">設計</text>
+
+  <!-- Branch 3: bottom-left -->
+  <line x1="340" y1="330" x2="220" y2="420" stroke="#d6a84b" stroke-width="2.5"/>
+  <rect x="140" y="397" width="90" height="40" rx="20" fill="#3a2a0a"/>
+  <rect x="140" y="397" width="90" height="40" rx="20" fill="none" stroke="#d6a84b" stroke-width="1.5"/>
+  <text x="185" y="422" font-family="sans-serif" font-size="12" fill="#d6a84b" text-anchor="middle">実装</text>
+
+  <!-- Branch 4: top-right -->
+  <line x1="460" y1="300" x2="570" y2="210" stroke="#9b59b6" stroke-width="2.5"/>
+  <rect x="560" y="182" width="100" height="40" rx="20" fill="#2a1a3a"/>
+  <rect x="560" y="182" width="100" height="40" rx="20" fill="none" stroke="#9b59b6" stroke-width="1.5"/>
+  <text x="610" y="207" font-family="sans-serif" font-size="12" fill="#9b59b6" text-anchor="middle">ブレスト</text>
+
+  <!-- Branch 5: middle-right -->
+  <line x1="460" y1="315" x2="580" y2="315" stroke="#e67e22" stroke-width="2.5"/>
+  <rect x="570" y="292" width="100" height="40" rx="20" fill="#3a1a0a"/>
+  <rect x="570" y="292" width="100" height="40" rx="20" fill="none" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="620" y="317" font-family="sans-serif" font-size="12" fill="#e67e22" text-anchor="middle">整理</text>
+
+  <!-- Branch 6: bottom-right -->
+  <line x1="460" y1="330" x2="570" y2="420" stroke="#b85c5c" stroke-width="2.5"/>
+  <rect x="560" y="397" width="100" height="40" rx="20" fill="#3a1a1a"/>
+  <rect x="560" y="397" width="100" height="40" rx="20" fill="none" stroke="#b85c5c" stroke-width="1.5"/>
+  <text x="610" y="422" font-family="sans-serif" font-size="12" fill="#b85c5c" text-anchor="middle">可視化</text>
+
+  <!-- Text content (right side) -->
+  <text x="780" y="240" font-family="'Noto Sans JP', sans-serif" font-size="52" font-weight="700" fill="#ececec" text-anchor="middle">マインドマップ</text>
+  <text x="780" y="300" font-family="'Noto Sans JP', sans-serif" font-size="22" fill="#888888" text-anchor="middle">無料オンライン作成ツール</text>
+
+  <!-- Feature tags -->
+  <rect x="618" y="340" width="100" height="34" rx="17" fill="#1e1e1e" stroke="#2e2e2e" stroke-width="1"/>
+  <text x="668" y="362" font-family="sans-serif" font-size="13" fill="#d0d0d0" text-anchor="middle">登録不要</text>
+
+  <rect x="730" y="340" width="100" height="34" rx="17" fill="#1e1e1e" stroke="#2e2e2e" stroke-width="1"/>
+  <text x="780" y="362" font-family="sans-serif" font-size="13" fill="#d0d0d0" text-anchor="middle">完全無料</text>
+
+  <rect x="842" y="340" width="100" height="34" rx="17" fill="#1e1e1e" stroke="#2e2e2e" stroke-width="1"/>
+  <text x="892" y="362" font-family="sans-serif" font-size="13" fill="#d0d0d0" text-anchor="middle">即座に使える</text>
+
+  <!-- Divider -->
+  <line x1="700" y1="405" x2="860" y2="405" stroke="#2e2e2e" stroke-width="1"/>
+  <text x="780" y="435" font-family="sans-serif" font-size="14" fill="#5a5a5a" text-anchor="middle">mind-map-tau-liart.vercel.app</text>
+</svg>

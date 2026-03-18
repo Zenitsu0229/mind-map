@@ -1,0 +1,30 @@
+{
+  "name": "マインドマップ - 無料オンラインツール",
+  "short_name": "マインドマップ",
+  "description": "ブラウザで使える無料のマインドマップ作成ツール。登録不要で即座に使えます。アイデア整理・ブレインストーミング・思考の可視化に最適。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0c0c",
+  "theme_color": "#d0d0d0",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "screenshots": []
+}

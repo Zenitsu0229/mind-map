@@ -3,7 +3,78 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mind Map</title>
+
+    <!-- ===== Primary SEO ===== -->
+    <title>マインドマップ | 無料オンライン作成ツール - 登録不要ですぐ使える</title>
+    <meta name="description" content="ブラウザで使える無料のマインドマップ作成ツール。登録・インストール不要で即座に使えます。アイデアの整理、ブレインストーミング、思考の可視化に最適。データはブラウザに保存されるのでプライバシーも安心。" />
+    <meta name="keywords" content="マインドマップ,マインドマップ作成,マインドマップ無料,オンラインマインドマップ,ブレインストーミング,アイデア整理,思考整理,マインドマップツール,無料ツール,マインドマッピング" />
+    <meta name="author" content="Mind Map" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="theme-color" content="#d0d0d0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141414" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="https://mind-map-tau-liart.vercel.app/" />
+
+    <!-- ===== Open Graph / SNS Sharing ===== -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="マインドマップ" />
+    <meta property="og:title" content="マインドマップ | 無料オンライン作成ツール - 登録不要ですぐ使える" />
+    <meta property="og:description" content="ブラウザで使える無料のマインドマップ作成ツール。登録・インストール不要で即座に使えます。アイデアの整理、ブレインストーミング、思考の可視化に最適。" />
+    <meta property="og:url" content="https://mind-map-tau-liart.vercel.app/" />
+    <meta property="og:image" content="https://mind-map-tau-liart.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="マインドマップ作成ツールのスクリーンショット" />
+    <meta property="og:locale" content="ja_JP" />
+
+    <!-- ===== Twitter Card ===== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="マインドマップ | 無料オンライン作成ツール - 登録不要ですぐ使える" />
+    <meta name="twitter:description" content="ブラウザで使える無料のマインドマップ作成ツール。登録・インストール不要で即座に使えます。アイデアの整理、ブレインストーミング、思考の可視化に最適。" />
+    <meta name="twitter:image" content="https://mind-map-tau-liart.vercel.app/og-image.png" />
+    <meta name="twitter:image:alt" content="マインドマップ作成ツールのスクリーンショット" />
+
+    <!-- ===== Favicon ===== -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+
+    <!-- ===== PWA Manifest ===== -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- ===== Structured Data (JSON-LD) ===== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "マインドマップ",
+      "alternateName": "Mind Map",
+      "url": "https://mind-map-tau-liart.vercel.app/",
+      "description": "ブラウザで使える無料のマインドマップ作成ツール。登録・インストール不要で即座に使えます。アイデアの整理、ブレインストーミング、思考の可視化に最適。データはブラウザに保存されるのでプライバシーも安心。",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      },
+      "featureList": [
+        "マインドマップの作成・編集",
+        "ノードの追加・削除・移動",
+        "ライト・ダークテーマ切替",
+        "JSON形式でのインポート・エクスポート",
+        "画像としてエクスポート",
+        "Undo/Redo（無制限）",
+        "キーボードショートカット対応",
+        "ローカル保存（プライバシー保護）",
+        "登録不要・完全無料"
+      ],
+      "screenshot": "https://mind-map-tau-liart.vercel.app/og-image.png",
+      "inLanguage": "ja",
+      "isAccessibleForFree": true,
+      "browserRequirements": "Requires a modern web browser"
+    }
+    </script>
+
+    <!-- ===== Fonts ===== -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,6 +84,14 @@
   </head>
   <body>
     <div id="app"></div>
+    <noscript>
+      <div style="text-align:center;padding:60px 20px;font-family:sans-serif;">
+        <h1>マインドマップ - 無料オンライン作成ツール</h1>
+        <p>ブラウザで使える無料のマインドマップ作成ツールです。登録・インストール不要で即座に使えます。</p>
+        <p>アイデアの整理、ブレインストーミング、思考の可視化に最適。データはブラウザに保存されるのでプライバシーも安心です。</p>
+        <p>このアプリを使用するにはJavaScriptを有効にしてください。</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
