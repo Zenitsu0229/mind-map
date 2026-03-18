@@ -9,7 +9,10 @@
       "WebFetch(domain:www.mindmeister.com)",
       "WebFetch(domain:support.mindmeister.com)",
       "WebFetch(domain:www.meisterlabs.com)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(find D:02_projectvalorant-tools -type f -name *.env*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

@@ -6,14 +6,8 @@
         <button class="close-btn" @click="emit('close')">✕</button>
       </div>
 
-      <div v-if="submitted" class="submitted-msg">
-        <div class="submitted-icon">✓</div>
-        <p>お問い合わせを受け付けました。</p>
-        <p class="sub">内容を確認のうえ、ご登録のメールアドレス宛にご回答いたします。</p>
-        <button class="btn-primary" @click="emit('close')">閉じる</button>
-      </div>
-
-      <form v-else @submit.prevent="submit" class="form">
+      <!-- 入力ステップ -->
+      <form v-if="step === 'input'" @submit.prevent="toConfirm" class="form">
         <div class="field">
           <label class="field-label">お名前 <span class="required">*</span></label>
           <input v-model="form.name" type="text" required placeholder="山田 太郎" />
@@ -25,11 +19,11 @@
         </div>
 
         <div class="field">
-          <label class="field-label">お問い合わせ種別</label>
-          <select v-model="form.category">
-            <option value="general">一般的なご質問</option>
-            <option value="bug">不具合・バグ報告</option>
-            <option value="feature">機能のご要望</option>
+          <label class="field-label">お問い合わせ種別 <span class="required">*</span></label>
+          <select v-model="form.category" required>
+            <option value="" disabled>選択してください</option>
+            <option value="bug">バグ報告</option>
+            <option value="feature">機能リクエスト</option>
             <option value="other">その他</option>
           </select>
         </div>
@@ -44,31 +38,131 @@
           />
         </div>
 
-        <button type="submit" class="btn-primary">送信する</button>
+        <p v-if="validationError" class="error-msg">{{ validationError }}</p>
+
+        <button type="submit" class="btn-primary">確認する</button>
       </form>
+
+      <!-- 確認ステップ -->
+      <div v-else-if="step === 'confirm'" class="confirm">
+        <p class="confirm-note">以下の内容で送信します。よろしければ「送信する」を押してください。</p>
+
+        <div class="confirm-table">
+          <div class="confirm-row">
+            <span class="confirm-label">お名前</span>
+            <span class="confirm-value">{{ form.name }}</span>
+          </div>
+          <div class="confirm-row">
+            <span class="confirm-label">メール</span>
+            <span class="confirm-value">{{ form.email }}</span>
+          </div>
+          <div class="confirm-row">
+            <span class="confirm-label">種別</span>
+            <span class="confirm-value">{{ categoryLabel }}</span>
+          </div>
+          <div class="confirm-row align-top">
+            <span class="confirm-label">内容</span>
+            <span class="confirm-value pre">{{ form.message }}</span>
+          </div>
+        </div>
+
+        <p v-if="sendError" class="error-msg">{{ sendError }}</p>
+
+        <div class="btn-group">
+          <button class="btn-secondary" @click="step = 'input'" :disabled="sending">戻る</button>
+          <button class="btn-primary" @click="send" :disabled="sending">
+            <span v-if="sending">送信中…</span>
+            <span v-else>送信する</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 完了ステップ -->
+      <div v-else-if="step === 'done'" class="submitted-msg">
+        <div class="submitted-icon">✓</div>
+        <p>お問い合わせを受け付けました。</p>
+        <p class="sub">内容を確認のうえ、ご登録のメールアドレス宛にご回答いたします。</p>
+        <button class="btn-primary" @click="emit('close')">閉じる</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import emailjs from '@emailjs/browser'
+
+const EMAILJS_SERVICE  = 'valorantToolsSuport'
+const EMAILJS_TEMPLATE = 'template_droxhiq'
+const EMAILJS_KEY      = '19eKLO4vnSkZSZ3eT'
 
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-const submitted = ref(false)
+type Step = 'input' | 'confirm' | 'done'
+
+const step = ref<Step>('input')
+const sending = ref(false)
+const sendError = ref('')
+const validationError = ref('')
 
 const form = reactive({
   name: '',
   email: '',
-  category: 'general',
+  category: '',
   message: '',
 })
 
-function submit(): void {
-  // TODO: バックエンドAPIエンドポイントに接続する
-  submitted.value = true
+const categoryMap: Record<string, string> = {
+  bug:     'バグ報告',
+  feature: '機能リクエスト',
+  other:   'その他',
+}
+
+const categoryLabel = computed(() => categoryMap[form.category] ?? form.category)
+
+function validate(): boolean {
+  if (!form.name.trim())    { validationError.value = 'お名前を入力してください。'; return false }
+  if (!form.email.trim())   { validationError.value = 'メールアドレスを入力してください。'; return false }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    validationError.value = '有効なメールアドレスを入力してください。'
+    return false
+  }
+  if (!form.category)       { validationError.value = 'お問い合わせ種別を選択してください。'; return false }
+  if (!form.message.trim()) { validationError.value = 'お問い合わせ内容を入力してください。'; return false }
+  validationError.value = ''
+  return true
+}
+
+function toConfirm(): void {
+  if (!validate()) return
+  step.value = 'confirm'
+  sendError.value = ''
+}
+
+async function send(): Promise<void> {
+  sending.value = true
+  sendError.value = ''
+  try {
+    await emailjs.send(
+      EMAILJS_SERVICE,
+      EMAILJS_TEMPLATE,
+      {
+        from_name:  form.name,
+        from_email: form.email,
+        category:   categoryLabel.value,
+        message:    form.message,
+      },
+      EMAILJS_KEY,
+    )
+    step.value = 'done'
+  } catch (err: unknown) {
+    const e = err as { text?: string } | null
+    sendError.value = `送信に失敗しました（${e?.text ?? err}）。時間をおいて再度お試しください。`
+  } finally {
+    sending.value = false
+  }
 }
 
 function onKeydown(e: KeyboardEvent): void {
@@ -188,27 +282,127 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
   min-height: 100px;
 }
 
-.btn-primary {
+/* 確認画面 */
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.confirm-note {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.confirm-table {
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.confirm-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.confirm-row:last-child {
+  border-bottom: none;
+}
+
+.confirm-row.align-top {
+  align-items: flex-start;
+}
+
+.confirm-label {
+  width: 72px;
+  flex-shrink: 0;
+  padding: 10px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-right: 1px solid var(--border);
+}
+
+.confirm-value {
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.confirm-value.pre {
+  white-space: pre-wrap;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-primary,
+.btn-secondary {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px 0;
-  background: var(--text-primary);
-  color: var(--bg);
-  border: 1px solid var(--text-primary);
   border-radius: 0;
   font-size: 13px;
   font-family: var(--font-family);
   cursor: pointer;
   transition: opacity 0.12s;
-  width: 100%;
   letter-spacing: 0.05em;
   font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--text-primary);
+  color: var(--bg);
+  border: 1px solid var(--text-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.82;
+}
+
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--border-active);
+  color: var(--text-primary);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* 単独の送信ボタン（入力ステップ） */
+.form > .btn-primary {
+  width: 100%;
   margin-top: 4px;
 }
 
-.btn-primary:hover {
-  opacity: 0.82;
+/* エラー */
+.error-msg {
+  font-size: 12px;
+  color: #e05555;
+  line-height: 1.5;
 }
 
 /* 送信完了 */
@@ -248,5 +442,6 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
 .submitted-msg .btn-primary {
   margin-top: 12px;
   max-width: 160px;
+  width: 160px;
 }
 </style>
