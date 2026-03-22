@@ -1,6 +1,7 @@
 import type { MindNode } from '../types'
 
 const STORAGE_KEY = 'mind-map-data'
+const COLOR_THEME_KEY = 'mind-map-color-theme'
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
 export function saveToStorage(root: MindNode): void {
@@ -34,4 +35,26 @@ export function clearStorage(): void {
 
 export function hasStoredData(): boolean {
   return localStorage.getItem(STORAGE_KEY) !== null
+}
+
+export function saveColorTheme(colors: Record<string, string>): void {
+  try {
+    localStorage.setItem(COLOR_THEME_KEY, JSON.stringify(colors))
+  } catch (e) {
+    console.error('Failed to save color theme:', e)
+  }
+}
+
+export function loadColorTheme(): Record<string, string> {
+  try {
+    const raw = localStorage.getItem(COLOR_THEME_KEY)
+    if (!raw) return {}
+    return JSON.parse(raw) as Record<string, string>
+  } catch {
+    return {}
+  }
+}
+
+export function clearColorTheme(): void {
+  localStorage.removeItem(COLOR_THEME_KEY)
 }

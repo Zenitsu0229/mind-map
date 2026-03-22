@@ -95,6 +95,21 @@
     <div class="toolbar-section toolbar-footer">
       <button
         class="toolbar-btn icon-only"
+        :title="store.theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'"
+        @click="store.toggleTheme()"
+      >
+        {{ store.theme === 'dark' ? '☀' : '☾' }}
+      </button>
+      <button
+        class="toolbar-btn icon-only"
+        :class="{ active: showColorPanel }"
+        title="カラー設定"
+        @click="emit('toggle-color-panel')"
+      >
+        ◈
+      </button>
+      <button
+        class="toolbar-btn icon-only"
         :class="{ active: showShortcuts }"
         title="ショートカット (?)"
         @click="emit('toggle-shortcuts')"
@@ -127,6 +142,7 @@ const emit = defineEmits<{
   (e: 'reset-view'): void
   (e: 'restart'): void
   (e: 'toggle-shortcuts'): void
+  (e: 'toggle-color-panel'): void
 }>()
 
 function onFullReset(): void {
@@ -137,6 +153,7 @@ function onFullReset(): void {
 
 defineProps<{
   showShortcuts: boolean
+  showColorPanel: boolean
 }>()
 
 function triggerImport(): void {

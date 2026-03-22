@@ -17,8 +17,11 @@
         @restart="handleRestart"
         :show-shortcuts="showShortcuts"
         @toggle-shortcuts="showShortcuts = !showShortcuts"
+        :show-color-panel="showColorPanel"
+        @toggle-color-panel="showColorPanel = !showColorPanel"
       />
       <ShortcutOverlay v-if="showShortcuts" @close="showShortcuts = false" />
+      <ColorCustomizerPanel v-if="showColorPanel" @close="showColorPanel = false" />
     </template>
 
     <ContactModal v-if="showContact" @close="showContact = false" />
@@ -36,15 +39,40 @@ import Toolbar from './components/Toolbar.vue'
 import ShortcutOverlay from './components/ShortcutOverlay.vue'
 import ContactModal from './components/ContactModal.vue'
 import LegalModal from './components/LegalModal.vue'
+import ColorCustomizerPanel from './components/ColorCustomizerPanel.vue'
 
 type LegalType = 'terms' | 'privacy' | 'cookie'
 
 const store = useMindMapStore()
 const started = ref(false)
 const showShortcuts = ref(false)
+const showColorPanel = ref(false)
 const showContact = ref(false)
 const legalType = ref<LegalType | null>(null)
 const canvasRef = ref<InstanceType<typeof MindMapCanvas> | null>(null)
+
+// カスタムカラーをCSSカスタムプロパティとして適用
+const ALL_CSS_VARS = [
+  '--bg', '--surface', '--surface-raised', '--border', '--border-active',
+  '--text-primary', '--text-secondary', '--accent', '--accent-glow', '--accent-dim',
+  '--node-bg', '--node-border', '--node-text', '--node-root-bg', '--node-root-border',
+  '--toolbar-bg', '--toolbar-border', '--toolbar-text', '--toolbar-btn-hover',
+  '--hint-color', '--overlay-bg', '--overlay-card-bg', '--overlay-card-text',
+  '--start-title', '--start-sub', '--start-input-bg', '--start-input-border', '--start-input-text',
+  '--success', '--warn',
+]
+
+watch(
+  () => store.customColors,
+  (colors) => {
+    const root = document.documentElement
+    ALL_CSS_VARS.forEach(v => root.style.removeProperty(v))
+    for (const [key, value] of Object.entries(colors)) {
+      if (value) root.style.setProperty(key, value)
+    }
+  },
+  { deep: true, immediate: true }
+)
 
 function openLegal(type: LegalType): void {
   legalType.value = type

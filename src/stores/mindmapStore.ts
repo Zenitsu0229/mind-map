@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import type { MindNode, LinkInfo } from '../types'
 import { calcLayout } from '../composables/useLayout'
 import { useHistory } from '../composables/useHistory'
-import { saveToStorage, loadFromStorage, clearStorage } from '../utils/storage'
+import { saveToStorage, loadFromStorage, clearStorage, saveColorTheme, loadColorTheme, clearColorTheme } from '../utils/storage'
 
 let nextIdCounter = 1
 
@@ -58,6 +58,7 @@ export const useMindMapStore = defineStore('mindmap', () => {
   const editingId = ref<string | null>(null)
   const theme = ref<'light' | 'dark'>('dark')
   const browserSerial = ref(0)
+  const customColors = ref<Record<string, string>>(loadColorTheme())
 
   const history = useHistory()
 
@@ -227,6 +228,22 @@ export const useMindMapStore = defineStore('mindmap', () => {
     theme.value = theme.value === 'dark' ? 'light' : 'dark'
   }
 
+  function setCustomColors(colors: Record<string, string>, baseTheme?: 'dark' | 'light'): void {
+    customColors.value = { ...colors }
+    saveColorTheme(customColors.value)
+    if (baseTheme) theme.value = baseTheme
+  }
+
+  function setCustomColor(key: string, value: string): void {
+    customColors.value = { ...customColors.value, [key]: value }
+    saveColorTheme(customColors.value)
+  }
+
+  function resetCustomColors(): void {
+    customColors.value = {}
+    clearColorTheme()
+  }
+
   function exportJSON(): void {
     if (!root.value) return
     const json = JSON.stringify(root.value, null, 2)
@@ -290,6 +307,7 @@ export const useMindMapStore = defineStore('mindmap', () => {
     selectedId,
     editingId,
     theme,
+    customColors,
     history,
     browserSerial,
     setBrowserSerial,
@@ -305,6 +323,9 @@ export const useMindMapStore = defineStore('mindmap', () => {
     finishEdit,
     selectNode,
     toggleTheme,
+    setCustomColors,
+    setCustomColor,
+    resetCustomColors,
     exportJSON,
     importJSON,
     undo,
